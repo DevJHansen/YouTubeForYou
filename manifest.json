@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ForYou",
+  "name": "YouTube ForYou",
   "version": "1.0",
   "description": "Blocks YouTube homepage distractions and shows a simple search bar instead",
   "permissions": [],
@@ -11,4 +11,10 @@
       "css": ["styles.css"],
       "run_at": "document_start"
     }
-  ]}
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

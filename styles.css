@@ -1,0 +1,107 @@
+#yt-focus-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f0f0f;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'YouTube Sans', 'Roboto', sans-serif;
+}
+
+#yt-focus-overlay.yt-focus-hidden {
+  display: none;
+}
+
+.yt-focus-container {
+  text-align: center;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.yt-focus-logo {
+  margin-bottom: 40px;
+}
+
+.yt-focus-youtube-logo {
+  width: 120px;
+  height: auto;
+  color: #fff;
+}
+
+.yt-focus-title {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+
+.yt-focus-subtitle {
+  color: #aaa;
+  font-size: 16px;
+  margin: 0 0 40px 0;
+}
+
+.yt-focus-search-form {
+  display: flex;
+  align-items: center;
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 40px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.yt-focus-search-form:focus-within {
+  border-color: #3ea6ff;
+}
+
+.yt-focus-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 16px 24px;
+  font-size: 18px;
+  color: #fff;
+  outline: none;
+}
+
+.yt-focus-search-input::placeholder {
+  color: #717171;
+}
+
+.yt-focus-search-button {
+  background: #222;
+  border: none;
+  padding: 16px 24px;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.yt-focus-search-button:hover {
+  background: #333;
+}
+
+.yt-focus-show-page {
+  margin-top: 32px;
+  background: transparent;
+  border: none;
+  color: #3ea6ff;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.yt-focus-show-page:hover {
+  background: rgba(62, 166, 255, 0.1);
+}

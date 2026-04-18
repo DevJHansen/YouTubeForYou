@@ -2,181 +2,216 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
   <style>
+    :root {
+      --bg: #0b0b0c;
+      --bg-1: #121214;
+      --bg-2: #17171a;
+      --bg-3: #1e1e22;
+      --line: #252528;
+      --line-soft: #1c1c1f;
+      --text: #ededf0;
+      --text-dim: #a1a1a8;
+      --text-faint: #6c6c74;
+      --accent: oklch(0.68 0.19 25);
+      --accent-soft: oklch(0.68 0.19 25 / 0.12);
+      --accent-line: oklch(0.68 0.19 25 / 0.4);
+      --accent-ink: oklch(0.98 0.02 25);
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: 'YouTube Sans', 'Roboto', sans-serif;
-      background: #0f0f0f;
-      color: #fff;
+      font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+      font-feature-settings: "ss01", "cv11";
+      -webkit-font-smoothing: antialiased;
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 20px;
-      width: 280px;
+      width: 300px;
+      line-height: 1.5;
     }
     .header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #303030;
+      gap: 10px;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--line-soft);
     }
-    .header svg {
-      width: 32px;
-      height: 32px;
+    .brand-mark {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: var(--accent);
+      display: grid; place-items: center;
+      color: var(--accent-ink);
       flex-shrink: 0;
     }
+    .brand-mark svg { display: block; }
     .header h1 {
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       margin: 0;
-    }
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-    }
-    .toggle-text {
       flex: 1;
-      padding-right: 12px;
     }
-    .toggle-label {
-      font-size: 13px;
-      color: #fff;
+    .status {
+      font-family: 'Geist Mono', ui-monospace, monospace;
+      font-size: 10px;
+      color: var(--accent);
+      display: inline-flex; align-items: center; gap: 6px;
     }
-    .toggle-desc {
+    .status::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+    }
+
+    .lock-notice {
+      margin: 12px 18px 0;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-line);
+      color: var(--accent);
       font-size: 11px;
-      color: #888;
+      padding: 10px 12px;
+      border-radius: 8px;
+      line-height: 1.4;
+      font-family: 'Geist Mono', ui-monospace, monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .list { padding: 6px 0 8px; }
+    .row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 18px;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .row:hover:not(.disabled):not(.sub) { background: var(--bg-1); }
+    .row.sub:hover:not(.disabled) { background: var(--bg-1); }
+    .row.sub {
+      padding-left: 40px;
+      position: relative;
+    }
+    .row.sub::before {
+      content: '';
+      position: absolute;
+      left: 26px; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--line);
+    }
+    .row-text { flex: 1; min-width: 0; }
+    .row-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .row-desc {
+      font-size: 11px;
+      color: var(--text-faint);
       margin-top: 2px;
     }
+
     .switch {
       position: relative;
       display: inline-block;
-      width: 36px;
-      height: 20px;
+      width: 32px; height: 18px;
       flex-shrink: 0;
     }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute;
       cursor: pointer;
       inset: 0;
-      background: #555;
-      border-radius: 20px;
+      background: var(--bg-3);
+      border-radius: 999px;
       transition: background 0.2s;
     }
-    .slider:before {
+    .slider::after {
       position: absolute;
       content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      top: 3px;
-      background: #fff;
+      width: 14px; height: 14px;
+      left: 2px; top: 2px;
+      background: var(--text-faint);
       border-radius: 50%;
-      transition: transform 0.2s;
+      transition: transform 0.2s, background 0.2s;
     }
-    input:checked + .slider {
-      background: #FF0000;
-    }
-    input:checked + .slider:before {
-      transform: translateX(16px);
-    }
-    input:disabled + .slider {
-      cursor: not-allowed;
-      opacity: 0.4;
-    }
-    .toggle-row.sub {
-      padding-left: 20px;
-      border-left: 2px solid #303030;
-      margin-left: 4px;
-    }
-    .toggle-row.disabled .toggle-label,
-    .toggle-row.disabled .toggle-desc {
-      opacity: 0.4;
-    }
-    .lock-notice {
-      background: rgba(255, 0, 0, 0.08);
-      border: 1px solid rgba(255, 0, 0, 0.3);
-      color: #ff9a9a;
-      font-size: 11px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
+    input:checked + .slider { background: var(--accent); }
+    input:checked + .slider::after { transform: translateX(14px); background: #fff; }
+    input:disabled + .slider { cursor: not-allowed; opacity: 0.4; }
+
+    .row.disabled .row-label,
+    .row.disabled .row-desc { opacity: 0.4; }
   </style>
 </head>
 <body>
   <div class="header">
-    <svg viewBox="0 0 128 128">
-      <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" stroke-width="6"/>
-      <circle cx="64" cy="64" r="46" fill="#FF0000"/>
-      <path d="M52 42 L52 86 L88 64 Z" fill="white"/>
-    </svg>
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+        <path d="M9 7.5v9l7-4.5z"/>
+      </svg>
+    </span>
     <h1>YouTube ForYou</h1>
+    <span class="status">Active</span>
   </div>
 
   <div class="lock-notice" id="lockNotice" hidden>
     Solve the puzzle on the YouTube tab to change these settings.
   </div>
 
-  <div class="toggle-row" id="blockHomepageRow">
-    <div class="toggle-text">
-      <div class="toggle-label">Block homepage</div>
-      <div class="toggle-desc">Replace homepage with search</div>
+  <div class="list">
+    <div class="row" id="blockHomepageRow">
+      <div class="row-text">
+        <div class="row-label">Block homepage</div>
+        <div class="row-desc">Replace homepage with search</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="blockHomepage">
+        <span class="slider"></span>
+      </label>
     </div>
-    <label class="switch">
-      <input type="checkbox" id="blockHomepage">
-      <span class="slider"></span>
-    </label>
-  </div>
 
-  <div class="toggle-row sub" id="puzzleBypassRow">
-    <div class="toggle-text">
-      <div class="toggle-label">Puzzle to bypass</div>
-      <div class="toggle-desc">Solve a math puzzle to proceed</div>
+    <div class="row sub" id="puzzleBypassRow">
+      <div class="row-text">
+        <div class="row-label">Puzzle to bypass</div>
+        <div class="row-desc">Solve a math puzzle to proceed</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="puzzleBypass">
+        <span class="slider"></span>
+      </label>
     </div>
-    <label class="switch">
-      <input type="checkbox" id="puzzleBypass">
-      <span class="slider"></span>
-    </label>
-  </div>
 
-  <div class="toggle-row">
-    <div class="toggle-text">
-      <div class="toggle-label">Hide Shorts</div>
-      <div class="toggle-desc">Remove Shorts everywhere</div>
+    <div class="row">
+      <div class="row-text">
+        <div class="row-label">Hide Shorts</div>
+        <div class="row-desc">Remove Shorts everywhere</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="hideShorts">
+        <span class="slider"></span>
+      </label>
     </div>
-    <label class="switch">
-      <input type="checkbox" id="hideShorts">
-      <span class="slider"></span>
-    </label>
-  </div>
 
-  <div class="toggle-row">
-    <div class="toggle-text">
-      <div class="toggle-label">Hide comments</div>
-      <div class="toggle-desc">Hide comments on videos</div>
+    <div class="row">
+      <div class="row-text">
+        <div class="row-label">Hide comments</div>
+        <div class="row-desc">Hide comments on videos</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="hideComments">
+        <span class="slider"></span>
+      </label>
     </div>
-    <label class="switch">
-      <input type="checkbox" id="hideComments">
-      <span class="slider"></span>
-    </label>
-  </div>
 
-  <div class="toggle-row">
-    <div class="toggle-text">
-      <div class="toggle-label">Hide recommended</div>
-      <div class="toggle-desc">Hide sidebar suggestions</div>
+    <div class="row">
+      <div class="row-text">
+        <div class="row-label">Hide recommended</div>
+        <div class="row-desc">Hide sidebar suggestions</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="hideRecommended">
+        <span class="slider"></span>
+      </label>
     </div>
-    <label class="switch">
-      <input type="checkbox" id="hideRecommended">
-      <span class="slider"></span>
-    </label>
   </div>
 
   <script src="popup.js"></script>

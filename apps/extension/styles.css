@@ -1,62 +1,96 @@
+/* ---------- YouTube ForYou overlay ---------- */
+
 #yt-focus-overlay {
+  --bg: #0b0b0c;
+  --bg-1: #121214;
+  --bg-2: #17171a;
+  --bg-3: #1e1e22;
+  --line: #252528;
+  --line-soft: #1c1c1f;
+  --text: #ededf0;
+  --text-dim: #a1a1a8;
+  --text-faint: #6c6c74;
+  --accent: oklch(0.68 0.19 25);
+  --accent-soft: oklch(0.68 0.19 25 / 0.12);
+  --accent-line: oklch(0.68 0.19 25 / 0.4);
+  --accent-ink: oklch(0.98 0.02 25);
+
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #0f0f0f;
+  inset: 0;
   z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'YouTube Sans', 'Roboto', sans-serif;
+  background: var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Geist', 'Inter', sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  color: var(--text);
+  line-height: 1.5;
 }
 
-#yt-focus-overlay.yt-focus-hidden {
-  display: none;
+#yt-focus-overlay::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at center, var(--accent-soft) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0.6;
 }
+
+#yt-focus-overlay.yt-focus-hidden { display: none; }
 
 .yt-focus-container {
+  position: relative;
   text-align: center;
   padding: 40px;
-  max-width: 600px;
+  max-width: 620px;
   width: 100%;
 }
 
-.yt-focus-logo {
-  margin-bottom: 40px;
-}
-
+.yt-focus-logo { margin-bottom: 36px; display: flex; justify-content: center; }
 .yt-focus-foryou-logo {
-  width: 100px;
-  height: 100px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  display: grid;
+  place-items: center;
 }
+.yt-focus-foryou-logo svg { display: block; }
 
 .yt-focus-title {
-  color: #fff;
-  font-size: 32px;
+  color: var(--text);
+  font-size: clamp(32px, 4.5vw, 44px);
   font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin: 0 0 12px 0;
 }
 
 .yt-focus-subtitle {
-  color: #aaa;
-  font-size: 16px;
+  color: var(--text-dim);
+  font-size: 17px;
   margin: 0 0 40px 0;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .yt-focus-search-form {
   display: flex;
   align-items: center;
-  background: #121212;
-  border: 1px solid #303030;
-  border-radius: 40px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 999px;
   overflow: hidden;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, background 0.15s;
 }
-
 .yt-focus-search-form:focus-within {
-  border-color: #3ea6ff;
+  border-color: var(--accent-line);
+  background: var(--bg-2);
 }
 
 .yt-focus-search-input {
@@ -64,58 +98,58 @@
   background: transparent;
   border: none;
   padding: 16px 24px;
-  font-size: 18px;
-  color: #fff;
+  font-size: 16px;
+  color: var(--text);
   outline: none;
+  font-family: inherit;
 }
-
-.yt-focus-search-input::placeholder {
-  color: #717171;
-}
+.yt-focus-search-input::placeholder { color: var(--text-faint); }
 
 .yt-focus-search-button {
-  background: #222;
+  background: transparent;
   border: none;
-  padding: 16px 24px;
+  padding: 0 20px 0 8px;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-dim);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: color 0.15s;
+  font-family: inherit;
 }
-
-.yt-focus-search-button:hover {
-  background: #333;
-}
+.yt-focus-search-button:hover { color: var(--accent); }
 
 .yt-focus-show-page {
-  margin-top: 32px;
+  margin-top: 28px;
   background: transparent;
-  border: none;
-  color: #3ea6ff;
-  font-size: 14px;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-size: 13px;
   cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background 0.2s;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  font-family: inherit;
 }
-
 .yt-focus-show-page:hover {
-  background: rgba(62, 166, 255, 0.1);
+  border-color: var(--text-faint);
+  color: var(--text);
+  background: var(--bg-1);
 }
 
 .yt-focus-puzzle {
-  margin-top: 32px;
+  margin-top: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .yt-focus-puzzle-prompt {
-  color: #aaa;
-  font-size: 14px;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-family: ui-monospace, 'Geist Mono', SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.04em;
   margin: 0;
 }
 
@@ -126,53 +160,48 @@
 }
 
 .yt-focus-puzzle-input {
-  background: #121212;
-  border: 1px solid #303030;
-  border-radius: 20px;
-  padding: 8px 16px;
-  color: #fff;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
   font-size: 14px;
-  width: 80px;
+  width: 100px;
   outline: none;
   text-align: center;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
   -moz-appearance: textfield;
+  font-family: ui-monospace, 'Geist Mono', SFMono-Regular, Menlo, monospace;
 }
-
 .yt-focus-puzzle-input::-webkit-outer-spin-button,
 .yt-focus-puzzle-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-.yt-focus-puzzle-input:focus {
-  border-color: #3ea6ff;
-}
+.yt-focus-puzzle-input:focus { border-color: var(--accent-line); }
 
 .yt-focus-puzzle-submit {
-  background: #222;
-  border: 1px solid #303030;
-  border-radius: 20px;
-  padding: 8px 16px;
-  color: #fff;
-  font-size: 14px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: filter 0.15s, transform 0.15s;
+  font-family: inherit;
 }
-
-.yt-focus-puzzle-submit:hover {
-  background: #333;
-}
+.yt-focus-puzzle-submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
 @keyframes yt-focus-shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-8px); }
   75% { transform: translateX(8px); }
 }
+.yt-focus-shake { animation: yt-focus-shake 0.3s; }
 
-.yt-focus-shake {
-  animation: yt-focus-shake 0.3s;
-}
+/* ---------- Content-script hide rules (unchanged) ---------- */
 
 /* Hide Shorts across YouTube */
 html.yt-focus-hide-shorts ytd-reel-shelf-renderer,

@@ -44,21 +44,31 @@ Cost falls by ~95% once the top-1000 videos per user's niche are warm.
 
 ## Model selection
 
-Default to the cheapest model that gives acceptable quality. For clickbait: `claude-haiku-4-5` is plenty. For TLDR: `claude-sonnet-4-6` with a strict token budget (≤ 500 output). Never reach for Opus.
+We use **Google Gemini** (cheapest among frontier models, plenty good for our use cases).
+
+- Classification (clickbait): `gemini-2.5-flash-lite` — fast, ~$0.10/M input tokens
+- Summarization (TLDR): `gemini-2.5-flash` with a strict token budget (≤ 500 output)
+- Never reach for `gemini-2.5-pro` unless a feature genuinely needs it; it's ~10× the cost
 
 Explicit token caps on every call:
 
 ```ts
-const resp = await anthropic.messages.create({
-  model: 'claude-haiku-4-5-20251001',
-  max_tokens: 200, // clickbait verdict is a short JSON
-  messages: [...],
+import { GoogleGenAI } from '@google/genai';
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const resp = await ai.models.generateContent({
+  model: 'gemini-2.5-flash-lite',
+  contents: [...],
+  config: {
+    maxOutputTokens: 200, // clickbait verdict is a short JSON
+    responseMimeType: 'application/json', // force JSON for classification
+  },
 });
 ```
 
 ## Prompt caching
 
-Use Anthropic's prompt caching for repeated system prompts. Mark the system prompt with `cache_control: { type: 'ephemeral' }`. Hit rates on classification features should be >90%.
+Gemini supports **implicit context caching** — repeated prefix content is cached automatically. For repeated system prompts, keep the identical prefix at the start of every request. For heavy reuse, use **explicit caching** via `caches.create(...)` with a TTL.
 
 ## BYO-key as escape hatch
 

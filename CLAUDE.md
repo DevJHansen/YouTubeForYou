@@ -23,7 +23,7 @@ packages/      # (shared TS libs when needed — empty for now)
 - **Auth/DB:** Supabase (Pro plan, branching: `main` = prod, `dev` = permanent dev branch).
 - **Billing:** Polar.sh (sandbox for dev, live for prod).
 - **Hosting:** Vercel.
-- **AI:** Anthropic (Haiku for classification, Sonnet for summaries). Strict quotas — see `.claude/skills/ai-cost-safety/`.
+- **AI:** Google Gemini (2.5 Flash-Lite for classification, 2.5 Flash for summaries — cheapest frontier option). Strict quotas — see `.claude/skills/ai-cost-safety/`.
 
 ## Branches
 

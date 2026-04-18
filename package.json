@@ -1,0 +1,12 @@
+{
+  "name": "yt-foryou",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @yt-foryou/web dev",
+    "build": "pnpm --filter @yt-foryou/web build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm --filter @yt-foryou/web exec tsc --noEmit"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

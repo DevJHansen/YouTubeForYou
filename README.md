@@ -1,33 +1,24 @@
 # YouTube ForYou
 
-A Chrome extension that blocks YouTube's distracting homepage and replaces it with a focused search bar.
+A YouTube distraction blocker. Free Chrome extension + Pro web features.
 
 <a href="https://buymeacoffee.com/builtby_justin" target="_blank">
   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="150">
 </a>
 
-![Screenshot](screenshot.png)
+## Monorepo layout
 
-## Why?
+- [`apps/extension`](apps/extension/) — Chrome MV3 extension (free tier)
+- [`apps/web`](apps/web/) — Next.js web app (landing page, billing, Pro APIs)
 
-YouTube's homepage is designed to keep you scrolling. You came to search for one thing, and 30 minutes later you're watching videos you never intended to watch.
+## Dev
 
-ForYou replaces the homepage with a simple question: *"What did you come here to watch?"*
+```bash
+pnpm install
+pnpm dev         # runs the Next.js web app
+```
 
-The irony? By removing YouTube's "For You" recommendations, it actually works **for you**.
-
-## Features
-
-- **Homepage Blocker** — Replaces the feed with a distraction-free overlay
-- **Quick Search** — Jump straight to what you're looking for
-- **Escape Hatch** — "Show homepage anyway" when you want to browse
-
-## Installation
-
-1. Download or clone this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked** and select the folder
+For the extension: load `apps/extension/` unpacked at `chrome://extensions/`.
 
 ## License
 

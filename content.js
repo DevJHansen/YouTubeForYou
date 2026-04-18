@@ -1,25 +1,48 @@
-// Check if we're on the YouTube homepage
-function isHomePage() {
-  const path = window.location.pathname;
-  return (
-    path === '/' ||
-    path === '/index' ||
-    ((path === '/feed/subscriptions') === false && path === '/')
-  );
+const DEFAULT_SETTINGS = {
+  blockHomepage: true,
+  hideShorts: true,
+  hideComments: true,
+  hideRecommended: true,
+  puzzleBypass: true,
+};
+
+let settings = { ...DEFAULT_SETTINGS };
+
+// Apply default hide classes immediately so elements don't flash before storage loads
+applySettingClasses();
+
+function applySettingClasses() {
+  const html = document.documentElement;
+  html.classList.toggle('yt-focus-hide-shorts', !!settings.hideShorts);
+  html.classList.toggle('yt-focus-hide-comments', !!settings.hideComments);
+  html.classList.toggle('yt-focus-hide-recommended', !!settings.hideRecommended);
 }
 
-function shouldBlock() {
+function shouldBlockHomepage() {
   const path = window.location.pathname;
-  // Block only the main homepage (not search results, watch pages, etc.)
-  return path === '/' || path === '';
+  return !!settings.blockHomepage && (path === '/' || path === '');
 }
 
-// Create the focus mode overlay
-function createOverlay() {
-  // Check if overlay already exists
-  if (document.getElementById('yt-focus-overlay')) {
-    return;
+function isShortsPage() {
+  return window.location.pathname.startsWith('/shorts/');
+}
+
+function maybeRedirectShorts() {
+  if (settings.hideShorts && isShortsPage()) {
+    window.location.replace('https://www.youtube.com/');
+    return true;
   }
+  return false;
+}
+
+function generatePuzzle() {
+  const a = 10 + Math.floor(Math.random() * 40);
+  const b = 10 + Math.floor(Math.random() * 40);
+  return { a, b, answer: a + b };
+}
+
+function createOverlay() {
+  if (document.getElementById('yt-focus-overlay')) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'yt-focus-overlay';
@@ -53,12 +76,24 @@ function createOverlay() {
       <button class="yt-focus-show-page" id="yt-focus-show-page">
         Show homepage anyway
       </button>
+      <div class="yt-focus-puzzle" id="yt-focus-puzzle" hidden>
+        <p class="yt-focus-puzzle-prompt" id="yt-focus-puzzle-prompt"></p>
+        <form class="yt-focus-puzzle-form" id="yt-focus-puzzle-form">
+          <input
+            type="number"
+            class="yt-focus-puzzle-input"
+            id="yt-focus-puzzle-input"
+            autocomplete="off"
+            inputmode="numeric"
+          />
+          <button type="submit" class="yt-focus-puzzle-submit">Continue</button>
+        </form>
+      </div>
     </div>
   `;
 
   document.documentElement.appendChild(overlay);
 
-  // Handle search form submission
   const form = document.getElementById('yt-focus-search-form');
   const input = document.getElementById('yt-focus-search-input');
 
@@ -70,47 +105,102 @@ function createOverlay() {
     }
   });
 
-  // Handle show page button
   const showPageBtn = document.getElementById('yt-focus-show-page');
-  showPageBtn.addEventListener('click', () => {
+  const puzzleEl = document.getElementById('yt-focus-puzzle');
+  const puzzlePrompt = document.getElementById('yt-focus-puzzle-prompt');
+  const puzzleForm = document.getElementById('yt-focus-puzzle-form');
+  const puzzleInput = document.getElementById('yt-focus-puzzle-input');
+  let currentPuzzle = null;
+
+  function bypassHomepage() {
     overlay.classList.add('yt-focus-hidden');
     document.body.style.overflow = '';
-    // Store in session that user wants to see the page
     sessionStorage.setItem('yt-focus-show-homepage', 'true');
+    setPuzzleActive(false);
+  }
+
+  function presentPuzzle() {
+    currentPuzzle = generatePuzzle();
+    puzzlePrompt.textContent = `Solve to continue:  ${currentPuzzle.a} + ${currentPuzzle.b} = ?`;
+    puzzleInput.value = '';
+    showPageBtn.hidden = true;
+    puzzleEl.hidden = false;
+    puzzleInput.focus();
+    setPuzzleActive(true);
+  }
+
+  showPageBtn.addEventListener('click', () => {
+    if (settings.puzzleBypass) {
+      presentPuzzle();
+    } else {
+      bypassHomepage();
+    }
   });
 
-  // Focus the input
+  puzzleForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const guess = parseInt(puzzleInput.value, 10);
+    if (guess === currentPuzzle.answer) {
+      bypassHomepage();
+    } else {
+      puzzleEl.classList.remove('yt-focus-shake');
+      void puzzleEl.offsetWidth;
+      puzzleEl.classList.add('yt-focus-shake');
+      presentPuzzle();
+    }
+  });
+
   setTimeout(() => {
     input.focus();
   }, 100);
 }
 
-// Remove overlay
 function removeOverlay() {
   const overlay = document.getElementById('yt-focus-overlay');
   if (overlay) {
     overlay.remove();
+    setPuzzleActive(false);
   }
 }
 
-// Main logic
+function setPuzzleActive(active) {
+  chrome.storage.local.set({ puzzleActive: !!active });
+}
+
 function checkAndBlock() {
-  // If user chose to show homepage this session, don't block
+  if (maybeRedirectShorts()) return;
+
   if (sessionStorage.getItem('yt-focus-show-homepage') === 'true') {
-    // Reset when navigating away from homepage
-    if (!shouldBlock()) {
+    if (!shouldBlockHomepage()) {
       sessionStorage.removeItem('yt-focus-show-homepage');
     }
     removeOverlay();
     return;
   }
 
-  if (shouldBlock()) {
+  if (shouldBlockHomepage()) {
     createOverlay();
   } else {
     removeOverlay();
   }
 }
+
+// Load settings from storage
+chrome.storage.sync.get(DEFAULT_SETTINGS).then((data) => {
+  settings = { ...DEFAULT_SETTINGS, ...data };
+  applySettingClasses();
+  checkAndBlock();
+});
+
+// Live-update when user toggles settings in the popup
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  for (const [key, { newValue }] of Object.entries(changes)) {
+    settings[key] = newValue;
+  }
+  applySettingClasses();
+  checkAndBlock();
+});
 
 // Run on page load
 if (document.readyState === 'loading') {
@@ -129,5 +219,9 @@ new MutationObserver(() => {
   }
 }).observe(document, { subtree: true, childList: true });
 
-// Also listen for popstate events
 window.addEventListener('popstate', checkAndBlock);
+
+// Clear puzzle-active flag when the page is hidden/closed so the popup doesn't stay locked after navigating away
+window.addEventListener('pagehide', () => {
+  setPuzzleActive(false);
+});

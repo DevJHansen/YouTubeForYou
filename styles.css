@@ -104,3 +104,99 @@
 .yt-focus-show-page:hover {
   background: rgba(62, 166, 255, 0.1);
 }
+
+.yt-focus-puzzle {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.yt-focus-puzzle-prompt {
+  color: #aaa;
+  font-size: 14px;
+  margin: 0;
+}
+
+.yt-focus-puzzle-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.yt-focus-puzzle-input {
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 14px;
+  width: 80px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+}
+
+.yt-focus-puzzle-input::-webkit-outer-spin-button,
+.yt-focus-puzzle-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.yt-focus-puzzle-input:focus {
+  border-color: #3ea6ff;
+}
+
+.yt-focus-puzzle-submit {
+  background: #222;
+  border: 1px solid #303030;
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.yt-focus-puzzle-submit:hover {
+  background: #333;
+}
+
+@keyframes yt-focus-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.yt-focus-shake {
+  animation: yt-focus-shake 0.3s;
+}
+
+/* Hide Shorts across YouTube */
+html.yt-focus-hide-shorts ytd-reel-shelf-renderer,
+html.yt-focus-hide-shorts ytd-rich-shelf-renderer[is-shorts],
+html.yt-focus-hide-shorts ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+html.yt-focus-hide-shorts ytd-reel-item-renderer,
+html.yt-focus-hide-shorts ytd-guide-entry-renderer:has(a[title="Shorts"]),
+html.yt-focus-hide-shorts ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+html.yt-focus-hide-shorts ytd-video-renderer:has([overlay-style="SHORTS"]),
+html.yt-focus-hide-shorts grid-shelf-view-model,
+html.yt-focus-hide-shorts ytm-shorts-lockup-view-model,
+html.yt-focus-hide-shorts [is-shorts],
+html.yt-focus-hide-shorts yt-chip-cloud-chip-renderer[chip-style="STYLE_HOME_FILTER"]:has(yt-formatted-string[title="Shorts"]) {
+  display: none !important;
+}
+
+/* Hide comments under videos */
+html.yt-focus-hide-comments ytd-comments,
+html.yt-focus-hide-comments #comments {
+  display: none !important;
+}
+
+/* Hide recommended videos in watch-page sidebar */
+html.yt-focus-hide-recommended #related,
+html.yt-focus-hide-recommended ytd-watch-next-secondary-results-renderer {
+  display: none !important;
+}

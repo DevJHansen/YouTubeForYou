@@ -51,8 +51,10 @@ function createOverlay() {
     <div class="yt-focus-container">
       <div class="yt-focus-logo">
         <div class="yt-focus-foryou-logo">
-          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true">
-            <path d="M9 7.5v9l7-4.5z"/>
+          <svg viewBox="0 0 128 128" aria-hidden="true">
+            <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" stroke-width="6"/>
+            <circle cx="64" cy="64" r="46" fill="#FF0000"/>
+            <path d="M52 42 L52 86 L88 64 Z" fill="white"/>
           </svg>
         </div>
       </div>

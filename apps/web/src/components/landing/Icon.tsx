@@ -51,10 +51,18 @@ export function Icon({
         </svg>
       );
     case "mark":
-      // ForYou wordmark: rounded play triangle inside rounded square (logo used in brand-mark).
+      // YouTube ForYou logo: outlined circle + filled circle + white triangle.
       return (
-        <svg viewBox="0 0 24 24" {...common} strokeWidth={2}>
-          <path d="M9 7.5v9l7-4.5z" fill="currentColor" stroke="none" />
+        <svg
+          viewBox="0 0 128 128"
+          width={size}
+          height={size}
+          aria-hidden="true"
+          className={className}
+        >
+          <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" strokeWidth="6" />
+          <circle cx="64" cy="64" r="46" fill="#FF0000" />
+          <path d="M52 42 L52 86 L88 64 Z" fill="white" />
         </svg>
       );
     case "shorts":

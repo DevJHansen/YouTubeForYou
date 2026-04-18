@@ -796,6 +796,99 @@ p { margin: 0; text-wrap: pretty; }
 .pv-schedule .row .lbl { flex: 1; color: var(--text-dim); }
 .pv-schedule .row.on .lbl { color: var(--text); }
 
+/* Session budget preview */
+.pv-budget {
+  padding: 24px;
+  height: 100%;
+  display: flex; flex-direction: column; gap: 14px; justify-content: center;
+}
+.pv-budget .budget-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.pv-budget .budget-row.subtle { margin-top: 8px; color: var(--text-faint); }
+.pv-budget .budget-row strong {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 16px;
+}
+.pv-budget .budget-label {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pv-budget .budget-bar {
+  height: 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.pv-budget .budget-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+.pv-budget .budget-meta {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* Analytics preview */
+.pv-analytics {
+  padding: 20px;
+  height: 100%;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.pv-analytics .analytics-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.pv-analytics .analytics-stats > div {
+  padding: 10px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.pv-analytics .analytics-stats .num {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.pv-analytics .analytics-stats .lbl {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+.pv-analytics .analytics-chart {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 80px;
+  padding: 0 4px;
+}
+.pv-analytics .analytics-chart .bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-soft) 100%);
+  border-radius: 3px 3px 0 0;
+  min-height: 4px;
+}
+.pv-analytics .analytics-days {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  text-align: center;
+  padding: 0 4px;
+}
+
 /* Clickbait preview */
 .pv-clickbait {
   padding: 20px;

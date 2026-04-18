@@ -8,7 +8,7 @@ export function Hero() {
         <div>
           <div className="hero-eyebrow">
             <span className="pulse" />
-            <span className="mono">v2.0 · Chrome + Edge + Arc</span>
+            <span className="mono">v2.0 · Chrome + Edge + Brave + Arc</span>
           </div>
           <h1>
             Take back your

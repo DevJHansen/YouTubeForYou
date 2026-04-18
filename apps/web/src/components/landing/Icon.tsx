@@ -1,10 +1,28 @@
-type IconName =
+import {
+  ArrowRight,
+  CalendarClock,
+  ChartBar,
+  Check,
+  Clock,
+  Eye,
+  Home,
+  Lock,
+  MessageSquare,
+  PanelRight,
+  Puzzle,
+  Search,
+  SkipForward,
+  Timer,
+  TriangleAlert,
+  type LucideProps,
+} from "lucide-react";
+
+export type IconName =
   | "play"
   | "shorts"
   | "sponsor"
   | "comment"
   | "sidebar"
-  | "translate"
   | "home"
   | "autoplay"
   | "chrome"
@@ -18,7 +36,26 @@ type IconName =
   | "clock"
   | "chart"
   | "eye"
-  | "alert";
+  | "alert"
+  | "budget";
+
+const LUCIDE: Partial<Record<IconName, React.ComponentType<LucideProps>>> = {
+  arrow: ArrowRight,
+  search: Search,
+  lock: Lock,
+  check: Check,
+  home: Home,
+  comment: MessageSquare,
+  sidebar: PanelRight,
+  puzzle: Puzzle,
+  schedule: CalendarClock,
+  clock: Clock,
+  chart: ChartBar,
+  eye: Eye,
+  alert: TriangleAlert,
+  sponsor: SkipForward,
+  budget: Timer,
+};
 
 export function Icon({
   name,
@@ -31,164 +68,122 @@ export function Icon({
   stroke?: number;
   className?: string;
 }) {
-  const common = {
-    width: size,
-    height: size,
-    strokeWidth: stroke,
-    stroke: "currentColor",
-    fill: "none",
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    className,
-  };
-
-  switch (name) {
-    case "play":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <circle cx="12" cy="12" r="10" fill="currentColor" stroke="none" />
-          <path d="M10 8l6 4-6 4z" fill="#0b0b0c" stroke="none" />
-        </svg>
-      );
-    case "mark":
-      // YouTube ForYou logo: outlined circle + filled circle + white triangle.
-      return (
-        <svg
-          viewBox="0 0 128 128"
-          width={size}
-          height={size}
-          aria-hidden="true"
-          className={className}
-        >
-          <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" strokeWidth="6" />
-          <circle cx="64" cy="64" r="46" fill="#FF0000" />
-          <path d="M52 42 L52 86 L88 64 Z" fill="white" />
-        </svg>
-      );
-    case "shorts":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M8 4h8l4 4v12a0 0 0 0 1 0 0H4V8z" />
-          <path d="M10 11l5 3-5 3z" />
-        </svg>
-      );
-    case "sponsor":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <rect x="3" y="6" width="18" height="12" rx="2" />
-          <path d="M9 12h2M13 12h2M17 12h0" />
-          <path d="M6 9l-2 3 2 3" />
-        </svg>
-      );
-    case "comment":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z" />
-        </svg>
-      );
-    case "sidebar":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <path d="M15 4v16" />
-        </svg>
-      );
-    case "translate":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M4 5h10M9 3v2M6 5s0 5 5 8M14 13s-3 1-5 0" />
-          <path d="M11 20l4-9 4 9M12.5 17h5" />
-        </svg>
-      );
-    case "home":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z" />
-        </svg>
-      );
-    case "autoplay":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M12 3a9 9 0 1 1-9 9" />
-          <path d="M3 3v6h6" />
-          <path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none" />
-        </svg>
-      );
-    case "chrome":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="3.2" />
-          <path d="M21 12h-9M7.5 6.5l4.5 5.5M7.5 17.5L12 12" />
-        </svg>
-      );
-    case "arrow":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M5 12h14M13 6l6 6-6 6" />
-        </svg>
-      );
-    case "check":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M4 12l5 5L20 6" />
-        </svg>
-      );
-    case "lock":
-      return (
-        <svg viewBox="0 0 24 24" {...common} strokeWidth={1.8}>
-          <rect x="5" y="11" width="14" height="10" rx="2" />
-          <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-        </svg>
-      );
-    case "search":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-4-4" />
-        </svg>
-      );
-    case "puzzle":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M4 10h3a2 2 0 1 0 4 0h3a2 2 0 1 1 0 4v3a2 2 0 1 0-4 0H7a2 2 0 1 1 0-4V10z" />
-        </svg>
-      );
-    case "schedule":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <rect x="3" y="5" width="18" height="16" rx="2" />
-          <path d="M3 9h18M8 3v4M16 3v4" />
-        </svg>
-      );
-    case "clock":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5l3 2" />
-        </svg>
-      );
-    case "chart":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
-        </svg>
-      );
-    case "eye":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      );
-    case "alert":
-      return (
-        <svg viewBox="0 0 24 24" {...common}>
-          <path d="M12 3l10 18H2z" />
-          <path d="M12 10v4M12 17h0" />
-        </svg>
-      );
-    default:
-      return null;
+  if (name === "mark") {
+    return (
+      <svg
+        viewBox="0 0 128 128"
+        width={size}
+        height={size}
+        aria-hidden="true"
+        className={className}
+      >
+        <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" strokeWidth="6" />
+        <circle cx="64" cy="64" r="46" fill="#FF0000" />
+        <path d="M52 42 L52 86 L88 64 Z" fill="white" />
+      </svg>
+    );
   }
+
+  if (name === "chrome") {
+    // Google Chrome brand logo — full colour, recognisable at small sizes.
+    return (
+      <svg
+        viewBox="0 0 190.5 190.5"
+        width={size}
+        height={size}
+        aria-hidden="true"
+        className={className}
+      >
+        <path
+          fill="#fff"
+          d="M95.25 142.875c26.302 0 47.625-21.324 47.625-47.625S121.552 47.625 95.25 47.625 47.625 68.948 47.625 95.25s21.324 47.625 47.625 47.625z"
+        />
+        <path
+          fill="#229342"
+          d="M54.005 71.44 28.34 27A95.22 95.22 0 0 0 .534 108.563l51.48-8.886C49.762 91.147 50.5 80.57 54.005 71.44z"
+        />
+        <path
+          fill="#fbc116"
+          d="M95.25 142.875a47.54 47.54 0 0 0 40.813-23.179L83.86 137.06a47.603 47.603 0 0 1-9.44-12.067L44.5 76.565A47.625 47.625 0 0 0 95.25 142.875z"
+        />
+        <path
+          fill="#1a73e8"
+          d="M135.982 119.694a47.625 47.625 0 0 0-.054-48.953l36.82-5.86A95.264 95.264 0 0 1 136 168l-.018-48.306z"
+        />
+        <path
+          fill="#e33b2e"
+          d="M142.875 95.25a47.625 47.625 0 0 0-95.25 0l47.625-47.625h77.247A95.249 95.249 0 0 0 95.25 0v47.625z"
+        />
+        <circle cx="95.25" cy="95.25" r="38" fill="#1a73e8" />
+      </svg>
+    );
+  }
+
+  if (name === "shorts") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width={size}
+        height={size}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={stroke}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        aria-hidden="true"
+      >
+        <rect x="6" y="3" width="12" height="18" rx="2" />
+        <path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+
+  if (name === "play") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width={size}
+        height={size}
+        fill="currentColor"
+        className={className}
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M10 8l6 4-6 4z" fill="#0b0b0c" />
+      </svg>
+    );
+  }
+
+  if (name === "autoplay") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width={size}
+        height={size}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={stroke}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        aria-hidden="true"
+      >
+        <path d="M12 3a9 9 0 1 1-9 9" />
+        <path d="M3 3v6h6" />
+        <path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+
+  const LucideIcon = LUCIDE[name];
+  if (!LucideIcon) return null;
+  return (
+    <LucideIcon
+      size={size}
+      strokeWidth={stroke}
+      className={className}
+      aria-hidden
+    />
+  );
 }

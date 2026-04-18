@@ -68,10 +68,13 @@ export function Pricing() {
                 <span className="c">✓</span>Auto-skip sponsors
               </li>
               <li>
-                <span className="c">✓</span>Session budgets &amp; analytics
+                <span className="c">✓</span>Session budgets (daily / weekly limits)
               </li>
               <li>
-                <span className="c">✓</span>Clickbait warnings
+                <span className="c">✓</span>Clickbait warnings with genuine-title replacements
+              </li>
+              <li>
+                <span className="c">✓</span>Analytics — Shorts blocked, time saved, streaks
               </li>
               <li>
                 <span className="c">✓</span>Sync settings across devices

@@ -9,7 +9,9 @@ export type FeatureId =
   | "sidebar"
   | "schedule"
   | "sponsor"
-  | "clickbait";
+  | "budget"
+  | "clickbait"
+  | "analytics";
 
 export type Feature = {
   id: FeatureId;
@@ -97,8 +99,19 @@ export const FEATURES: Feature[] = [
     preview: <PreviewSponsor />,
   },
   {
-    id: "clickbait",
+    id: "budget",
     num: "08",
+    icon: "budget",
+    title: "Session budgets",
+    tag: "TIME BANK",
+    heading: "Spend your attention on purpose.",
+    body: "Set a daily or weekly watch budget. ForYou tracks active watch time and gently warns as you approach the limit — then blocks the homepage until tomorrow.",
+    pro: true,
+    preview: <PreviewBudget />,
+  },
+  {
+    id: "clickbait",
+    num: "09",
     icon: "alert",
     title: "Clickbait warnings",
     tag: "TRUTH IN TITLES",
@@ -106,6 +119,17 @@ export const FEATURES: Feature[] = [
     body: "AI flags clickbait thumbnails and titles, and offers a plain-language replacement describing what the video actually covers.",
     pro: true,
     preview: <PreviewClickbait />,
+  },
+  {
+    id: "analytics",
+    num: "10",
+    icon: "chart",
+    title: "Analytics",
+    tag: "RECEIPTS",
+    heading: "See how much time you got back.",
+    body: "Weekly stats on Shorts blocked, long-form vs. Shorts watched, watch-time by day, focus-mode streaks, and the categories eating your attention.",
+    pro: true,
+    preview: <PreviewAnalytics />,
   },
 ];
 
@@ -251,6 +275,66 @@ function PreviewClickbait() {
             <Icon name="alert" size={10} /> Clickbait detected
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function PreviewBudget() {
+  return (
+    <div className="pv-budget">
+      <div className="budget-row">
+        <span className="budget-label">Today</span>
+        <span className="budget-val">
+          <strong>42</strong> / 60 min
+        </span>
+      </div>
+      <div className="budget-bar">
+        <div className="budget-fill" style={{ width: "70%" }} />
+      </div>
+      <div className="budget-meta">
+        18 min remaining · resets at midnight
+      </div>
+      <div className="budget-row subtle">
+        <span className="budget-label">This week</span>
+        <span className="budget-val">
+          <strong>3.2</strong> / 5 h
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function PreviewAnalytics() {
+  return (
+    <div className="pv-analytics">
+      <div className="analytics-stats">
+        <div>
+          <div className="num">1,247</div>
+          <div className="lbl">Shorts blocked</div>
+        </div>
+        <div>
+          <div className="num">8.2h</div>
+          <div className="lbl">Time saved</div>
+        </div>
+        <div>
+          <div className="num">12</div>
+          <div className="lbl">Day streak</div>
+        </div>
+      </div>
+      <div className="analytics-chart">
+        {[30, 50, 40, 70, 55, 85, 45].map((h, i) => (
+          <div key={i} className="bar" style={{ height: `${h}%` }} />
+        ))}
+      </div>
+      <div className="analytics-days">
+        <span>M</span>
+        <span>T</span>
+        <span>W</span>
+        <span>T</span>
+        <span>F</span>
+        <span>S</span>
+        <span>S</span>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ export default async function ExtensionAuthPage() {
       email={session.email}
       plan={session.plan}
       accessToken={supabaseSession?.accessToken ?? ""}
+      refreshToken={supabaseSession?.refreshToken ?? ""}
       expiresAt={supabaseSession?.expiresAt ?? 0}
       userId={session.userId}
     />
@@ -26,6 +27,7 @@ async function getAccessToken() {
   if (!data.session) return null;
   return {
     accessToken: data.session.access_token,
+    refreshToken: data.session.refresh_token,
     expiresAt: data.session.expires_at ?? 0,
   };
 }

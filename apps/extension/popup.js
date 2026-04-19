@@ -1,296 +1,359 @@
-const FREE_DEFAULTS = {
+const WEB_URL = 'https://yt-foryou-web.vercel.app';
+
+const DEFAULTS = {
   blockHomepage: true,
-  puzzleBypass: true,
   hideShorts: true,
   hideComments: true,
   hideRecommended: true,
-};
-
-const PRO_DEFAULTS = {
+  puzzleBypass: true,
   scheduledFocus: false,
   autoSkipSponsors: false,
   sessionBudgets: false,
   clickbaitWarnings: false,
   analytics: false,
+  focusSchedule: { days: [1, 2, 3, 4, 5], start: '09:00', end: '17:00' },
+  sessionBudget: { dailyMinutes: 30 },
 };
-
-const STATS_DEFAULTS = {
-  shortsBlocked: 0,
-  secondsSaved: 0,
-};
-
-const WEB_URL = "https://yt-foryou-web.vercel.app";
-const SIGNIN_URL = `${WEB_URL}/auth/extension`;
-const UPGRADE_URL = `${WEB_URL}/upgrade`;
-const BILLING_URL = `${WEB_URL}/billing`;
 
 const FREE_FEATURES = [
-  { key: "blockHomepage", label: "Block homepage", iconName: "home" },
-  { key: "puzzleBypass", label: "Puzzle to bypass", iconName: "puzzle", sub: true },
-  { key: "hideShorts", label: "Hide Shorts", iconName: "shorts" },
-  { key: "hideComments", label: "Hide comments", iconName: "comment" },
-  { key: "hideRecommended", label: "Hide recommendations", iconName: "sidebar" },
+  {
+    key: 'blockHomepage',
+    label: 'Block homepage',
+    desc: 'Replace homepage with search',
+  },
+  {
+    key: 'puzzleBypass',
+    label: 'Puzzle to bypass',
+    desc: 'Solve a math puzzle to proceed',
+    indent: true,
+    dependsOn: 'blockHomepage',
+  },
+  {
+    key: 'hideShorts',
+    label: 'Hide Shorts',
+    desc: 'Remove Shorts everywhere',
+  },
+  {
+    key: 'hideComments',
+    label: 'Hide comments',
+    desc: 'Hide comments on videos',
+  },
+  {
+    key: 'hideRecommended',
+    label: 'Hide recommended',
+    desc: 'Hide sidebar suggestions',
+  },
 ];
 
 const PRO_FEATURES = [
-  { key: "scheduledFocus", label: "Scheduled focus", iconName: "schedule" },
-  { key: "autoSkipSponsors", label: "Auto-skip sponsors", iconName: "sponsor" },
-  { key: "sessionBudgets", label: "Session budgets", iconName: "budget" },
-  { key: "clickbaitWarnings", label: "Clickbait warnings", iconName: "alert" },
-  { key: "analytics", label: "Analytics", iconName: "chart" },
+  {
+    key: 'scheduledFocus',
+    label: 'Scheduled focus',
+    desc: 'Force blockers on during chosen hours',
+    configurable: true,
+  },
+  {
+    key: 'sessionBudgets',
+    label: 'Session budgets',
+    desc: 'Lock YouTube after a daily watch-time limit',
+    configurable: true,
+  },
+  {
+    key: 'autoSkipSponsors',
+    label: 'Auto-skip sponsors',
+    desc: 'Use SponsorBlock to jump past ads',
+  },
+  {
+    key: 'clickbaitWarnings',
+    label: 'Clickbait warnings',
+    desc: 'Flag clickbait titles with AI',
+  },
+  {
+    key: 'analytics',
+    label: 'Sync analytics',
+    desc: 'Send stats to yourdash (local tracking always on)',
+  },
 ];
 
-const LOCKED_KEYS = ["blockHomepage", "puzzleBypass"];
+const LOCKED_KEYS = ['blockHomepage', 'puzzleBypass'];
+const DAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-function icon(name) {
-  const common =
-    'width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
-  switch (name) {
-    case "home":
-      return `<svg ${common}><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg>`;
-    case "puzzle":
-      return `<svg ${common}><path d="M4 10h3a2 2 0 1 0 4 0h3a2 2 0 1 1 0 4v3a2 2 0 1 0-4 0H7a2 2 0 1 1 0-4V10z"/></svg>`;
-    case "shorts":
-      return `<svg ${common}><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>`;
-    case "comment":
-      return `<svg ${common}><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>`;
-    case "sidebar":
-      return `<svg ${common}><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>`;
-    case "schedule":
-      return `<svg ${common}><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>`;
-    case "sponsor":
-      return `<svg ${common}><path d="M5 4v16l8-8zM14 4v16l8-8z" fill="currentColor" stroke="none"/></svg>`;
-    case "budget":
-      return `<svg ${common}><circle cx="12" cy="13" r="8"/><path d="M12 8v5l3 2M9 2h6"/></svg>`;
-    case "alert":
-      return `<svg ${common}><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg>`;
-    case "chart":
-      return `<svg ${common}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>`;
-    case "lock":
-      return `<svg ${common} width="12" height="12"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
-    default:
-      return "";
-  }
-}
-
-function el(tag, attrs = {}, children = []) {
-  const node = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (k === "className") node.className = v;
-    else if (k === "dataset") for (const [dk, dv] of Object.entries(v)) node.dataset[dk] = dv;
-    else if (k === "innerHTML") node.innerHTML = v;
-    else if (k.startsWith("on")) node.addEventListener(k.slice(2).toLowerCase(), v);
-    else node.setAttribute(k, v);
-  }
-  for (const c of [].concat(children)) {
-    if (c == null) continue;
-    node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
-  }
-  return node;
-}
-
-function renderFreeRow(feat, checked, disabled) {
-  const row = el("div", {
-    className: `row${feat.sub ? " sub" : ""}${checked ? " active" : ""}${disabled ? " disabled" : ""}`,
-    dataset: { key: feat.key },
-  });
-  row.appendChild(el("span", { className: "icon", innerHTML: icon(feat.iconName) }));
-  const label = el("span", { className: "label" }, [feat.label]);
-  row.appendChild(label);
-  const sw = el("label", { className: "switch" });
-  const input = el("input", { type: "checkbox", id: feat.key });
-  input.checked = !!checked;
-  input.disabled = !!disabled;
-  const slider = el("span", { className: "slider" });
-  sw.appendChild(input);
-  sw.appendChild(slider);
-  row.appendChild(sw);
-  return row;
-}
-
-function renderProRow(feat, checked, locked) {
-  const row = el("div", {
-    className: `row${checked && !locked ? " active" : ""}${locked ? " locked" : ""}`,
-    dataset: { key: feat.key, pro: "true" },
-  });
-  row.appendChild(el("span", { className: "icon", innerHTML: icon(feat.iconName) }));
-  const label = el("span", { className: "label" }, [
-    feat.label,
-    el("span", { className: "pro-badge" }, ["PRO"]),
-  ]);
-  row.appendChild(label);
-  if (locked) {
-    row.appendChild(el("span", { className: "lock-sym", innerHTML: icon("lock") }));
-  } else {
-    const sw = el("label", { className: "switch" });
-    const input = el("input", { type: "checkbox", id: feat.key });
-    input.checked = !!checked;
-    const slider = el("span", { className: "slider" });
-    sw.appendChild(input);
-    sw.appendChild(slider);
-    row.appendChild(sw);
-  }
-  return row;
-}
-
-function openTab(url) {
-  chrome.tabs.create({ url });
-}
-
-function signOut() {
-  chrome.storage.local.remove("authSession", () => window.close());
-}
-
-function formatHours(seconds) {
-  if (!seconds) return "0";
-  return (seconds / 3600).toFixed(1);
-}
+let state = {
+  settings: { ...DEFAULTS },
+  authSession: null,
+  puzzleActive: false,
+};
 
 async function init() {
-  const [syncData, localData] = await Promise.all([
-    chrome.storage.sync.get({ ...FREE_DEFAULTS, ...PRO_DEFAULTS }),
-    chrome.storage.local.get({ puzzleActive: false, authSession: null, stats: STATS_DEFAULTS }),
+  const [sync, local] = await Promise.all([
+    chrome.storage.sync.get(DEFAULTS),
+    chrome.storage.local.get({ authSession: null, puzzleActive: false }),
   ]);
-
-  const session = localData.authSession;
-  const plan = session?.plan === "pro" ? "pro" : session ? "free" : "out";
-  let puzzleActive = !!localData.puzzleActive;
-
-  const freeList = document.getElementById("freeList");
-  const proList = document.getElementById("proList");
-  const account = document.getElementById("accountArea");
-  const lockNotice = document.getElementById("lockNotice");
-
-  function activeRuleCount() {
-    return Object.keys(FREE_DEFAULTS).filter((k) => syncData[k]).length;
-  }
-
-  function updateStatusAndStats() {
-    document.getElementById("activeCount").textContent = String(activeRuleCount());
-    document.getElementById("statShorts").textContent = String(
-      localData.stats?.shortsBlocked ?? 0,
-    );
-    document.getElementById("statSaved").innerHTML =
-      `${formatHours(localData.stats?.secondsSaved ?? 0)}<span class="unit">h</span>`;
-  }
-
-  function render() {
-    freeList.innerHTML = "";
-    proList.innerHTML = "";
-    account.innerHTML = "";
-
-    const blockEnabled = !!syncData.blockHomepage;
-
-    for (const f of FREE_FEATURES) {
-      let disabled = false;
-      if (puzzleActive && LOCKED_KEYS.includes(f.key)) disabled = true;
-      if (f.key === "puzzleBypass" && (!blockEnabled || puzzleActive)) disabled = true;
-      const row = renderFreeRow(f, syncData[f.key], disabled);
-      row.addEventListener("click", (e) => {
-        if (e.target.tagName === "INPUT") return; // label handles it
-      });
-      const input = row.querySelector("input");
-      input.addEventListener("change", async () => {
-        if (disabled) {
-          input.checked = !input.checked;
-          return;
-        }
-        syncData[f.key] = input.checked;
-        await chrome.storage.sync.set({ [f.key]: input.checked });
-        render();
-      });
-      freeList.appendChild(row);
-    }
-
-    const locked = plan !== "pro";
-    for (const f of PRO_FEATURES) {
-      const row = renderProRow(f, syncData[f.key], locked);
-      if (locked) {
-        row.addEventListener("click", () => openTab(UPGRADE_URL));
-      } else {
-        const input = row.querySelector("input");
-        if (input) {
-          input.addEventListener("change", async () => {
-            syncData[f.key] = input.checked;
-            await chrome.storage.sync.set({ [f.key]: input.checked });
-            render();
-          });
-        }
-      }
-      proList.appendChild(row);
-    }
-
-    if (plan === "out") {
-      account.appendChild(
-        el("button", {
-          className: "btn btn-primary",
-          onClick: () => openTab(UPGRADE_URL),
-        }, ["Upgrade to Pro — $4.99/mo"]),
-      );
-      account.appendChild(
-        el("button", {
-          className: "btn btn-link",
-          onClick: () => openTab(SIGNIN_URL),
-        }, ["Already a subscriber? Sign in"]),
-      );
-    } else if (plan === "free") {
-      account.appendChild(
-        el("div", { className: "account-user" }, [
-          el("span", { className: "email" }, [session.email ?? "Signed in"]),
-          el("span", { className: "plan-pill free" }, ["FREE"]),
-        ]),
-      );
-      account.appendChild(
-        el("button", {
-          className: "btn btn-primary",
-          onClick: () => openTab(UPGRADE_URL),
-        }, ["Upgrade to Pro — $4.99/mo"]),
-      );
-      account.appendChild(
-        el("button", {
-          className: "btn btn-link",
-          onClick: signOut,
-        }, ["Sign out"]),
-      );
-    } else {
-      account.appendChild(
-        el("div", { className: "account-user" }, [
-          el("span", { className: "email" }, [session.email ?? "Signed in"]),
-          el("span", { className: "plan-pill pro" }, ["PRO"]),
-        ]),
-      );
-      account.appendChild(
-        el("button", {
-          className: "btn btn-ghost",
-          onClick: () => openTab(BILLING_URL),
-        }, ["Manage subscription"]),
-      );
-      account.appendChild(
-        el("button", {
-          className: "btn btn-link",
-          onClick: signOut,
-        }, ["Sign out"]),
-      );
-    }
-
-    lockNotice.hidden = !puzzleActive;
-    updateStatusAndStats();
-  }
-
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === "local") {
-      if (changes.puzzleActive) {
-        puzzleActive = !!changes.puzzleActive.newValue;
-        render();
-      }
-      if (changes.stats) {
-        localData.stats = changes.stats.newValue || STATS_DEFAULTS;
-        updateStatusAndStats();
-      }
-    }
-  });
+  state.settings = { ...DEFAULTS, ...sync };
+  state.authSession = local.authSession || null;
+  state.puzzleActive = !!local.puzzleActive;
 
   render();
+
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'sync') {
+      for (const [k, { newValue }] of Object.entries(changes)) {
+        state.settings[k] = newValue;
+      }
+      render();
+    } else if (area === 'local') {
+      if (changes.puzzleActive) state.puzzleActive = !!changes.puzzleActive.newValue;
+      if (changes.authSession) state.authSession = changes.authSession.newValue || null;
+      render();
+    }
+  });
+}
+
+function isPro() {
+  return !!(state.authSession && state.authSession.plan === 'pro');
+}
+
+function render() {
+  renderFree();
+  renderPro();
+  renderAccount();
+  renderPlanTag();
+}
+
+function renderPlanTag() {
+  const tag = document.getElementById('planTag');
+  if (!tag) return;
+  if (isPro()) {
+    tag.textContent = 'PRO';
+    tag.classList.add('pro');
+  } else {
+    tag.textContent = state.authSession ? 'FREE' : 'LOCKED';
+    tag.classList.remove('pro');
+  }
+}
+
+function renderFree() {
+  const list = document.getElementById('freeList');
+  list.innerHTML = '';
+
+  const blockEnabled = !!state.settings.blockHomepage;
+  const locked = state.puzzleActive;
+  const lockNotice = document.getElementById('lockNotice');
+  lockNotice.hidden = !locked;
+
+  for (const feat of FREE_FEATURES) {
+    const row = document.createElement('div');
+    row.className = 'toggle-row' + (feat.indent ? ' sub' : '');
+    const disableForDep = feat.dependsOn && !state.settings[feat.dependsOn];
+    const disabled = locked && LOCKED_KEYS.includes(feat.key);
+    if (disabled || disableForDep) row.classList.add('disabled');
+
+    row.innerHTML = `
+      <div class="toggle-text">
+        <div class="toggle-label">${escapeHtml(feat.label)}</div>
+        <div class="toggle-desc">${escapeHtml(feat.desc)}</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" ${state.settings[feat.key] ? 'checked' : ''} ${disabled || disableForDep ? 'disabled' : ''} />
+        <span class="slider"></span>
+      </label>
+    `;
+    const input = row.querySelector('input');
+    input.addEventListener('change', () => {
+      if (LOCKED_KEYS.includes(feat.key) && state.puzzleActive) {
+        input.checked = !input.checked;
+        return;
+      }
+      chrome.storage.sync.set({ [feat.key]: input.checked });
+      // If blockHomepage turns off, also turn off puzzleBypass.
+      if (feat.key === 'blockHomepage' && !input.checked && state.settings.puzzleBypass) {
+        chrome.storage.sync.set({ puzzleBypass: false });
+      }
+    });
+    list.appendChild(row);
+  }
+}
+
+function renderPro() {
+  const list = document.getElementById('proList');
+  list.innerHTML = '';
+
+  for (const feat of PRO_FEATURES) {
+    const row = document.createElement('div');
+    row.className = 'toggle-row';
+    const unlocked = isPro();
+    if (!unlocked) row.classList.add('pro-locked');
+
+    const showConfig = !!feat.configurable && unlocked && !!state.settings[feat.key];
+
+    row.innerHTML = `
+      <div class="toggle-text">
+        <div class="toggle-label">
+          ${escapeHtml(feat.label)}
+          ${!unlocked ? '<span class="pro-badge">PRO</span>' : ''}
+        </div>
+        <div class="toggle-desc">${escapeHtml(feat.desc)}</div>
+      </div>
+      ${feat.configurable && unlocked && state.settings[feat.key] ? '<button class="config-chevron" type="button" data-key="' + feat.key + '">Configure</button>' : ''}
+      <label class="switch">
+        <input type="checkbox" ${state.settings[feat.key] ? 'checked' : ''} ${!unlocked ? 'disabled' : ''} />
+        <span class="slider"></span>
+      </label>
+    `;
+    const input = row.querySelector('input');
+    input.addEventListener('change', () => {
+      if (!unlocked) {
+        input.checked = !input.checked;
+        return;
+      }
+      chrome.storage.sync.set({ [feat.key]: input.checked });
+    });
+
+    // Non-Pro: clicking the row opens upgrade URL
+    if (!unlocked) {
+      row.addEventListener('click', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        const path = state.authSession ? '/billing' : '/auth/signin?next=/billing';
+        chrome.tabs.create({ url: `${WEB_URL}${path}` });
+      });
+    }
+
+    list.appendChild(row);
+
+    // Configure panel
+    if (showConfig) {
+      const chevron = row.querySelector('.config-chevron');
+      const panel = buildConfigPanel(feat.key);
+      panel.hidden = true;
+      list.appendChild(panel);
+      chevron.addEventListener('click', () => {
+        panel.hidden = !panel.hidden;
+      });
+    }
+  }
+}
+
+function buildConfigPanel(key) {
+  const panel = document.createElement('div');
+  panel.className = 'config-panel';
+
+  if (key === 'scheduledFocus') {
+    const sched = state.settings.focusSchedule || DEFAULTS.focusSchedule;
+    panel.innerHTML = `
+      <label>DAYS</label>
+      <div class="day-picker"></div>
+      <div class="time-row">
+        <div>
+          <label>START</label>
+          <input type="time" class="focus-start" value="${escapeAttr(sched.start)}" />
+        </div>
+        <div>
+          <label>END</label>
+          <input type="time" class="focus-end" value="${escapeAttr(sched.end)}" />
+        </div>
+      </div>
+    `;
+    const dayPicker = panel.querySelector('.day-picker');
+    for (let i = 0; i < 7; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = DAY_LABELS[i];
+      if (sched.days && sched.days.includes(i)) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        const current = (state.settings.focusSchedule && state.settings.focusSchedule.days) || [];
+        const next = current.includes(i) ? current.filter((d) => d !== i) : [...current, i].sort();
+        saveFocusSchedule({ days: next });
+      });
+      dayPicker.appendChild(btn);
+    }
+    panel.querySelector('.focus-start').addEventListener('change', (e) => {
+      saveFocusSchedule({ start: e.target.value });
+    });
+    panel.querySelector('.focus-end').addEventListener('change', (e) => {
+      saveFocusSchedule({ end: e.target.value });
+    });
+  } else if (key === 'sessionBudgets') {
+    const budget = state.settings.sessionBudget || DEFAULTS.sessionBudget;
+    panel.innerHTML = `
+      <label>MINUTES PER DAY</label>
+      <input type="number" min="5" max="480" step="5" class="budget-minutes" value="${Number(budget.dailyMinutes) || 30}" />
+    `;
+    panel.querySelector('.budget-minutes').addEventListener('change', (e) => {
+      const n = Math.max(5, Math.min(480, parseInt(e.target.value, 10) || 30));
+      chrome.storage.sync.set({ sessionBudget: { dailyMinutes: n } });
+    });
+  }
+
+  return panel;
+}
+
+function saveFocusSchedule(patch) {
+  const current = state.settings.focusSchedule || DEFAULTS.focusSchedule;
+  const next = { ...current, ...patch };
+  chrome.storage.sync.set({ focusSchedule: next });
+}
+
+function renderAccount() {
+  const footer = document.getElementById('accountFooter');
+  footer.innerHTML = '';
+  const session = state.authSession;
+  if (!session) {
+    footer.innerHTML = `
+      <div class="account-row">
+        <span class="account-email">Sign in to unlock Pro</span>
+        <div class="account-actions">
+          <a class="account-btn primary" href="#" data-action="signin">Sign in</a>
+        </div>
+      </div>
+    `;
+  } else if (session.plan === 'pro') {
+    footer.innerHTML = `
+      <div class="account-row">
+        <span class="account-email" title="${escapeAttr(session.email || '')}">${escapeHtml(session.email || '')}</span>
+        <div class="account-actions">
+          <a class="account-btn" href="#" data-action="manage">Manage</a>
+          <a class="account-btn" href="#" data-action="signout">Sign out</a>
+        </div>
+      </div>
+    `;
+  } else {
+    footer.innerHTML = `
+      <div class="account-row">
+        <span class="account-email" title="${escapeAttr(session.email || '')}">${escapeHtml(session.email || '')}</span>
+        <div class="account-actions">
+          <a class="account-btn primary" href="#" data-action="upgrade">Upgrade</a>
+          <a class="account-btn" href="#" data-action="signout">Sign out</a>
+        </div>
+      </div>
+    `;
+  }
+
+  footer.querySelectorAll('[data-action]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const action = el.dataset.action;
+      if (action === 'signin') {
+        chrome.tabs.create({ url: `${WEB_URL}/auth/signin?next=/auth/extension` });
+      } else if (action === 'upgrade') {
+        chrome.tabs.create({ url: `${WEB_URL}/billing` });
+      } else if (action === 'manage') {
+        chrome.tabs.create({ url: `${WEB_URL}/billing` });
+      } else if (action === 'signout') {
+        chrome.storage.local.remove('authSession');
+      }
+    });
+  });
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+function escapeAttr(s) {
+  return escapeHtml(s);
 }
 
 init();

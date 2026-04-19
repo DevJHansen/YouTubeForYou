@@ -1,93 +1,62 @@
-/* ---------- YouTube ForYou overlay ---------- */
-
 #yt-focus-overlay {
-  --bg: #0b0b0c;
-  --bg-1: #121214;
-  --bg-2: #17171a;
-  --bg-3: #1e1e22;
-  --line: #252528;
-  --line-soft: #1c1c1f;
-  --text: #ededf0;
-  --text-dim: #a1a1a8;
-  --text-faint: #6c6c74;
-  --accent: #ff0000;
-  --accent-soft: rgba(255, 0, 0, 0.12);
-  --accent-line: rgba(255, 0, 0, 0.4);
-  --accent-ink: #ffffff;
-
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f0f0f;
   z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Geist', 'Inter', sans-serif;
-  font-feature-settings: "ss01", "cv11";
-  -webkit-font-smoothing: antialiased;
-  color: var(--text);
-  line-height: 1.5;
+  font-family: 'YouTube Sans', 'Roboto', sans-serif;
 }
 
-#yt-focus-overlay::before {
-  content: '';
-  position: absolute;
-  top: -200px; left: 50%; transform: translateX(-50%);
-  width: 900px; height: 600px;
-  background: radial-gradient(ellipse at center, var(--accent-soft) 0%, transparent 60%);
-  pointer-events: none;
-  opacity: 0.6;
+#yt-focus-overlay.yt-focus-hidden {
+  display: none;
 }
-
-#yt-focus-overlay.yt-focus-hidden { display: none; }
 
 .yt-focus-container {
-  position: relative;
   text-align: center;
   padding: 40px;
-  max-width: 620px;
+  max-width: 600px;
   width: 100%;
 }
 
-.yt-focus-logo { margin-bottom: 36px; display: flex; justify-content: center; }
-.yt-focus-foryou-logo {
-  width: 96px;
-  height: 96px;
-  display: grid;
-  place-items: center;
+.yt-focus-logo {
+  margin-bottom: 40px;
 }
-.yt-focus-foryou-logo svg { display: block; width: 100%; height: 100%; }
+
+.yt-focus-foryou-logo {
+  width: 100px;
+  height: 100px;
+}
 
 .yt-focus-title {
-  color: var(--text);
-  font-size: clamp(32px, 4.5vw, 44px);
+  color: #fff;
+  font-size: 32px;
   font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
   margin: 0 0 12px 0;
 }
 
 .yt-focus-subtitle {
-  color: var(--text-dim);
-  font-size: 17px;
+  color: #aaa;
+  font-size: 16px;
   margin: 0 0 40px 0;
-  max-width: 460px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .yt-focus-search-form {
   display: flex;
   align-items: center;
-  background: var(--bg-1);
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 40px;
   overflow: hidden;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.2s;
 }
+
 .yt-focus-search-form:focus-within {
-  border-color: var(--accent-line);
-  background: var(--bg-2);
+  border-color: #3ea6ff;
 }
 
 .yt-focus-search-input {
@@ -95,58 +64,58 @@
   background: transparent;
   border: none;
   padding: 16px 24px;
-  font-size: 16px;
-  color: var(--text);
+  font-size: 18px;
+  color: #fff;
   outline: none;
-  font-family: inherit;
 }
-.yt-focus-search-input::placeholder { color: var(--text-faint); }
+
+.yt-focus-search-input::placeholder {
+  color: #717171;
+}
 
 .yt-focus-search-button {
-  background: transparent;
+  background: #222;
   border: none;
-  padding: 0 20px 0 8px;
+  padding: 16px 24px;
   cursor: pointer;
-  color: var(--text-dim);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s;
-  font-family: inherit;
+  transition: background 0.2s;
 }
-.yt-focus-search-button:hover { color: var(--accent); }
+
+.yt-focus-search-button:hover {
+  background: #333;
+}
 
 .yt-focus-show-page {
-  margin-top: 28px;
+  margin-top: 32px;
   background: transparent;
-  border: 1px solid var(--line);
-  color: var(--text-dim);
-  font-size: 13px;
+  border: none;
+  color: #3ea6ff;
+  font-size: 14px;
   cursor: pointer;
-  padding: 10px 18px;
-  border-radius: 8px;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-  font-family: inherit;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
+
 .yt-focus-show-page:hover {
-  border-color: var(--text-faint);
-  color: var(--text);
-  background: var(--bg-1);
+  background: rgba(62, 166, 255, 0.1);
 }
 
 .yt-focus-puzzle {
-  margin-top: 28px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .yt-focus-puzzle-prompt {
-  color: var(--text-dim);
-  font-size: 13px;
-  font-family: ui-monospace, 'Geist Mono', SFMono-Regular, Menlo, monospace;
-  letter-spacing: 0.04em;
+  color: #aaa;
+  font-size: 14px;
   margin: 0;
 }
 
@@ -157,48 +126,53 @@
 }
 
 .yt-focus-puzzle-input {
-  background: var(--bg-2);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 10px 14px;
-  color: var(--text);
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #fff;
   font-size: 14px;
-  width: 100px;
+  width: 80px;
   outline: none;
   text-align: center;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s;
   -moz-appearance: textfield;
-  font-family: ui-monospace, 'Geist Mono', SFMono-Regular, Menlo, monospace;
 }
+
 .yt-focus-puzzle-input::-webkit-outer-spin-button,
 .yt-focus-puzzle-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.yt-focus-puzzle-input:focus { border-color: var(--accent-line); }
+
+.yt-focus-puzzle-input:focus {
+  border-color: #3ea6ff;
+}
 
 .yt-focus-puzzle-submit {
-  background: var(--accent);
-  color: var(--accent-ink);
-  border: 0;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-size: 13px;
-  font-weight: 500;
+  background: #222;
+  border: 1px solid #303030;
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 14px;
   cursor: pointer;
-  transition: filter 0.15s, transform 0.15s;
-  font-family: inherit;
+  transition: background 0.2s;
 }
-.yt-focus-puzzle-submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+.yt-focus-puzzle-submit:hover {
+  background: #333;
+}
 
 @keyframes yt-focus-shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-8px); }
   75% { transform: translateX(8px); }
 }
-.yt-focus-shake { animation: yt-focus-shake 0.3s; }
 
-/* ---------- Content-script hide rules (unchanged) ---------- */
+.yt-focus-shake {
+  animation: yt-focus-shake 0.3s;
+}
 
 /* Hide Shorts across YouTube */
 html.yt-focus-hide-shorts ytd-reel-shelf-renderer,
@@ -225,4 +199,141 @@ html.yt-focus-hide-comments #comments {
 html.yt-focus-hide-recommended #related,
 html.yt-focus-hide-recommended ytd-watch-next-secondary-results-renderer {
   display: none !important;
+}
+
+/* ----- Session budget lockout ----- */
+#yt-focus-lockout {
+  position: fixed;
+  inset: 0;
+  background: #0f0f0f;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'YouTube Sans', 'Roboto', sans-serif;
+}
+
+#yt-focus-lockout .yt-focus-lockout-card {
+  text-align: center;
+  padding: 40px;
+  max-width: 520px;
+}
+
+/* ----- Toast (sponsor skip) ----- */
+#yt-focus-toast-host {
+  position: fixed;
+  top: 72px;
+  right: 24px;
+  z-index: 2147483646;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+}
+
+.yt-focus-toast {
+  background: #111;
+  border: 1px solid #303030;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  animation: yt-focus-toast-in 180ms ease-out;
+}
+
+.yt-focus-toast.yt-focus-toast-out {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+@keyframes yt-focus-toast-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ----- Clickbait badge + panel ----- */
+.yt-focus-clickbait-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: #FF0000;
+  color: #fff;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.yt-focus-clickbait-panel {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 6px;
+  color: #eee;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.yt-focus-clickbait-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ff9a9a;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.yt-focus-clickbait-chevron {
+  transition: transform 180ms;
+}
+
+.yt-focus-clickbait-open .yt-focus-clickbait-chevron {
+  transform: rotate(90deg);
+}
+
+.yt-focus-clickbait-body {
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.yt-focus-clickbait-row {
+  margin-bottom: 8px;
+}
+
+.yt-focus-clickbait-row strong {
+  color: #ffb0b0;
+  font-weight: 600;
+}
+
+.yt-focus-genuine-title {
+  color: #fff;
+}
+
+.yt-focus-clickbait-reveal {
+  margin-top: 4px;
+  background: #FF0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.yt-focus-clickbait-reveal:disabled {
+  background: #444;
+  cursor: default;
 }

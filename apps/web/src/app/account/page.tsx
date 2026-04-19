@@ -17,9 +17,14 @@ export default async function AccountPage() {
       </div>
       <div className="auth-actions">
         {session.plan === "pro" ? (
-          <Link href="/billing" className="btn-ghost auth-submit">
-            Manage subscription
-          </Link>
+          <>
+            <Link href="/account/analytics" className="btn-ghost auth-submit">
+              Analytics
+            </Link>
+            <Link href="/billing" className="btn-ghost auth-submit">
+              Manage subscription
+            </Link>
+          </>
         ) : (
           <Link href="/upgrade" className="btn-primary auth-submit">
             Upgrade to Pro

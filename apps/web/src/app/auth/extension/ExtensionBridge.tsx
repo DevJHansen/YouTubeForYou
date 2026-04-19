@@ -24,12 +24,14 @@ export function ExtensionBridge({
   email,
   plan,
   accessToken,
+  refreshToken,
   expiresAt,
   userId,
 }: {
   email: string;
   plan: "free" | "pro";
   accessToken: string;
+  refreshToken: string;
   expiresAt: number;
   userId: string;
 }) {
@@ -50,7 +52,12 @@ export function ExtensionBridge({
       extensionId,
       {
         type: "foryou:auth",
-        payload: { email, plan, accessToken, expiresAt, userId },
+        email,
+        plan,
+        accessToken,
+        refreshToken,
+        expiresAt,
+        userId,
       },
       () => {
         if (chrome.runtime?.lastError) {
@@ -60,7 +67,7 @@ export function ExtensionBridge({
         setStatus("done");
       },
     );
-  }, [email, plan, accessToken, expiresAt, userId]);
+  }, [email, plan, accessToken, refreshToken, expiresAt, userId]);
 
   return (
     <AuthShell title="Linking extension" subtitle={email}>

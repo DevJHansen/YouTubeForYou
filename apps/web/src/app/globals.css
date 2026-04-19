@@ -1199,3 +1199,176 @@ p { margin: 0; text-wrap: pretty; }
   position: absolute; left: 0; top: 0;
   font-size: 11px;
 }
+/* ---------- Analytics page ---------- */
+/* The analytics page reuses .auth-wrap / .auth-card from the auth shell, but
+   widens the card and adds its own grid + chart primitives. All monochrome
+   except the accent-red highlight used for Shorts (the thing we want users
+   to keep low). */
+.auth-card:has(.analytics-grid),
+.auth-card:has(.chart),
+.auth-card:has(.ratio) {
+  max-width: 640px;
+}
+.analytics-period {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: -8px 0 4px;
+}
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.stat-tile {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+.stat-tile__label {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.stat-tile__value {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  display: inline-flex; align-items: baseline; gap: 6px;
+}
+.stat-tile__unit {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.stat-tile__hint {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.stat-tile--streak {
+  border-color: var(--line);
+}
+
+.chart {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+.chart__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.chart__title {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.chart__legend {
+  display: inline-flex; gap: 12px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.chart__legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.chart__swatch {
+  width: 8px; height: 8px; border-radius: 2px;
+  display: inline-block;
+}
+.chart__swatch--long { background: var(--text-dim); }
+.chart__swatch--short { background: var(--accent); }
+.chart__svg {
+  width: 100%;
+  height: 120px;
+  display: block;
+  /* preserveAspectRatio=none stretches the bars to fill the card width without
+     us having to recompute geometry. Bars end up ~8–10px wide at typical
+     card widths. */
+}
+.chart-bar__long { fill: var(--text-dim); }
+.chart-bar__short { fill: var(--accent); }
+.chart__axis-row {
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  margin-top: 4px;
+}
+.chart__axis-lbl {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+  /* Labels are anchored at the left edge of their bar's slot. */
+  text-align: left;
+}
+
+.ratio {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+.ratio__donut svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.ratio__track {
+  fill: none;
+  stroke: var(--bg-3);
+  stroke-width: 14;
+}
+.ratio__arc {
+  fill: none;
+  stroke-width: 14;
+  transition: stroke-dasharray 0.3s;
+}
+.ratio__arc--long { stroke: var(--text-dim); }
+.ratio__arc--short { stroke: var(--accent); }
+.ratio__body { display: flex; flex-direction: column; gap: 6px; }
+.ratio__row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+.ratio__dot {
+  width: 8px; height: 8px; border-radius: 2px;
+}
+.ratio__dot--long { background: var(--text-dim); }
+.ratio__dot--short { background: var(--accent); }
+.ratio__lbl { color: var(--text-dim); font-size: 12px; }
+.ratio__val {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 520px) {
+  .analytics-grid { grid-template-columns: 1fr; }
+  .ratio { grid-template-columns: 80px 1fr; gap: 12px; }
+}
+

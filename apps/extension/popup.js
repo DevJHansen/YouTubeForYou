@@ -100,32 +100,20 @@ function isPro() {
 }
 
 function render() {
-  renderStatus();
   renderStats();
   renderList();
   renderAccount();
   document.getElementById('lockNotice').hidden = !state.puzzleActive;
 }
 
-function renderStatus() {
-  const count = FEATURES.filter((f) => {
-    if (f.tier === 'pro' && !isPro()) return false;
-    return !!state.settings[f.key];
-  }).length;
-  document.getElementById('statusText').textContent = `Active · ${count} ${
-    count === 1 ? 'rule' : 'rules'
-  }`;
-}
-
 function weekTotals() {
-  const totals = { shortsBlocked: 0, secondsWatchedLong: 0, secondsWatchedShorts: 0 };
+  const totals = { secondsWatchedLong: 0, secondsWatchedShorts: 0 };
   const now = new Date();
   for (let i = 0; i < 7; i++) {
     const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
     const key = d.toISOString().slice(0, 10);
     const bucket = state.statsDaily[key];
     if (!bucket) continue;
-    totals.shortsBlocked += bucket.shortsBlocked || 0;
     totals.secondsWatchedLong += bucket.secondsWatchedLong || 0;
     totals.secondsWatchedShorts += bucket.secondsWatchedShorts || 0;
   }
@@ -134,23 +122,13 @@ function weekTotals() {
 
 function renderStats() {
   const totals = weekTotals();
-  document.getElementById('statShorts').textContent = formatCount(totals.shortsBlocked);
-
-  // Rough estimate: 30s saved per blocked Short.
-  const savedSeconds = totals.shortsBlocked * 30;
-  const hours = savedSeconds / 3600;
-  const timeEl = document.getElementById('statTime');
-  if (hours >= 1) {
-    setHtml(timeEl, `${hours.toFixed(1)}<span class="unit">h</span>`);
+  const seconds = totals.secondsWatchedLong + totals.secondsWatchedShorts;
+  const el = document.getElementById('statWatchTime');
+  if (seconds >= 3600) {
+    setHtml(el, `${(seconds / 3600).toFixed(1)}<span class="unit">h</span>`);
   } else {
-    const minutes = Math.round(savedSeconds / 60);
-    setHtml(timeEl, `${minutes}<span class="unit">m</span>`);
+    setHtml(el, `${Math.round(seconds / 60)}<span class="unit">m</span>`);
   }
-}
-
-function formatCount(n) {
-  if (n >= 1000) return `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k`;
-  return String(n);
 }
 
 function renderList() {
@@ -322,47 +300,48 @@ function saveFocusSchedule(patch) {
 }
 
 function renderAccount() {
-  const footer = document.getElementById('accountFooter');
-  setHtml(footer, '');
+  const header = document.getElementById('headerAccount');
+  const upsell = document.getElementById('upsellSlot');
+  setHtml(header, '');
+  setHtml(upsell, '');
   const session = state.authSession;
 
   if (!session) {
+    setHtml(header, `<a class="account-btn" href="#" data-action="signin">Sign in</a>`);
     setHtml(
-      footer,
+      upsell,
       `
       <div class="upsell">
         <div class="upsell-copy">
           <span class="upsell-title">Unlock Pro</span>
-          <span class="upsell-sub">Schedules &middot; analytics &middot; sponsors</span>
+          <span class="upsell-sub">Focus schedules &middot; analytics &middot; sponsor skip</span>
         </div>
         <a class="account-btn primary" href="#" data-action="upgrade">Get Pro</a>
-      </div>
-      <div class="account-row">
-        <span class="account-email">Not signed in</span>
-        <div class="account-actions">
-          <a class="account-btn" href="#" data-action="signin">Sign in</a>
-        </div>
       </div>
     `
     );
   } else if (session.plan === 'pro') {
     setHtml(
-      footer,
+      header,
       `
-      <div class="account-row">
-        <span class="account-email" title="${escapeAttr(session.email || '')}">${escapeHtml(
+      <span class="account-email" title="${escapeAttr(session.email || '')}">${escapeHtml(
         session.email || ''
       )}</span>
-        <div class="account-actions">
-          <a class="account-btn" href="#" data-action="manage">Manage</a>
-          <a class="account-btn" href="#" data-action="signout">Sign out</a>
-        </div>
-      </div>
+      <a class="account-btn" href="#" data-action="manage">Manage</a>
     `
     );
   } else {
     setHtml(
-      footer,
+      header,
+      `
+      <span class="account-email" title="${escapeAttr(session.email || '')}">${escapeHtml(
+        session.email || ''
+      )}</span>
+      <a class="account-btn" href="#" data-action="signout">Sign out</a>
+    `
+    );
+    setHtml(
+      upsell,
       `
       <div class="upsell">
         <div class="upsell-copy">
@@ -371,19 +350,11 @@ function renderAccount() {
         </div>
         <a class="account-btn primary" href="#" data-action="upgrade">Get Pro</a>
       </div>
-      <div class="account-row">
-        <span class="account-email" title="${escapeAttr(session.email || '')}">${escapeHtml(
-        session.email || ''
-      )}</span>
-        <div class="account-actions">
-          <a class="account-btn" href="#" data-action="signout">Sign out</a>
-        </div>
-      </div>
     `
     );
   }
 
-  footer.querySelectorAll('[data-action]').forEach((el) => {
+  document.querySelectorAll('[data-action]').forEach((el) => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
       const action = el.dataset.action;

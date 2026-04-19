@@ -15,29 +15,21 @@
         </svg>
         <span>ForYou</span>
       </div>
-      <div class="status" id="statusText">Active · 0 rules</div>
+      <div class="header-account" id="headerAccount"></div>
     </header>
 
-    <div class="popup-stats">
-      <div>
-        <div class="num" id="statShorts">0</div>
-        <div class="lbl">Shorts blocked</div>
-      </div>
-      <div>
-        <div class="num" id="statTime">0<span class="unit">h</span></div>
-        <div class="lbl">Saved this week</div>
-      </div>
+    <div class="popup-stat">
+      <div class="num" id="statWatchTime">0<span class="unit">m</span></div>
+      <div class="lbl">Watched this week</div>
     </div>
+
+    <div class="upsell-slot" id="upsellSlot"></div>
 
     <div class="lock-notice" id="lockNotice" hidden>
       Solve the puzzle on the YouTube tab to change these settings.
     </div>
 
     <div class="popup-list" id="list"></div>
-
-    <footer class="popup-footer" id="accountFooter">
-      <!-- dynamically populated -->
-    </footer>
   </div>
 
   <script src="popup.js"></script>

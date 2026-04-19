@@ -1,3 +1,4 @@
+import { CHROME_WEBSTORE_URL } from "@/lib/links";
 import { Icon } from "./Icon";
 import { HeroPopupMock } from "./HeroPopupMock";
 
@@ -21,7 +22,12 @@ export function Hero() {
             what you came for and leave.
           </p>
           <div className="hero-cta-row">
-            <a className="btn-primary" href="#install">
+            <a
+              className="btn-primary"
+              href={CHROME_WEBSTORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Icon name="chrome" size={16} />
               Install free — 30 sec
             </a>

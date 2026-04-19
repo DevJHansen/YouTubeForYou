@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
+import { CHROME_WEBSTORE_URL } from "@/lib/links";
 import { Icon } from "./Icon";
 
 export async function Nav() {
@@ -30,7 +31,12 @@ export async function Nav() {
               Sign in
             </Link>
           )}
-          <a className="nav-cta" href="#install">
+          <a
+            className="nav-cta"
+            href={CHROME_WEBSTORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon name="chrome" size={14} />
             Add to Chrome
           </a>

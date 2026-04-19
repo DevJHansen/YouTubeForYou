@@ -1,3 +1,4 @@
+import { CHROME_WEBSTORE_URL } from "@/lib/links";
 import { Icon } from "./Icon";
 
 export function Pricing() {
@@ -41,7 +42,12 @@ export function Pricing() {
                 <span className="c">✓</span>Open source &amp; local-only
               </li>
             </ul>
-            <a href="#install" className="btn-ghost cta">
+            <a
+              href={CHROME_WEBSTORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost cta"
+            >
               <Icon name="chrome" size={14} />
               Add to Chrome
             </a>
@@ -80,7 +86,10 @@ export function Pricing() {
                 <span className="c">✓</span>Sync settings across devices
               </li>
             </ul>
-            <a href="#install" className="btn-primary cta">
+            <a
+              href="/auth/signup?next=/billing"
+              className="btn-primary cta"
+            >
               <Icon name="arrow" size={14} />
               Start Pro
             </a>

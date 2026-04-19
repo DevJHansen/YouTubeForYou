@@ -16,6 +16,7 @@ import {
   TriangleAlert,
   type LucideProps,
 } from "lucide-react";
+import { SiGooglechrome } from "react-icons/si";
 
 export type IconName =
   | "play"
@@ -85,37 +86,12 @@ export function Icon({
   }
 
   if (name === "chrome") {
-    // Google Chrome brand logo — full colour, recognisable at small sizes.
     return (
-      <svg
-        viewBox="0 0 190.5 190.5"
-        width={size}
-        height={size}
-        aria-hidden="true"
+      <SiGooglechrome
+        size={size}
         className={className}
-      >
-        <path
-          fill="#fff"
-          d="M95.25 142.875c26.302 0 47.625-21.324 47.625-47.625S121.552 47.625 95.25 47.625 47.625 68.948 47.625 95.25s21.324 47.625 47.625 47.625z"
-        />
-        <path
-          fill="#229342"
-          d="M54.005 71.44 28.34 27A95.22 95.22 0 0 0 .534 108.563l51.48-8.886C49.762 91.147 50.5 80.57 54.005 71.44z"
-        />
-        <path
-          fill="#fbc116"
-          d="M95.25 142.875a47.54 47.54 0 0 0 40.813-23.179L83.86 137.06a47.603 47.603 0 0 1-9.44-12.067L44.5 76.565A47.625 47.625 0 0 0 95.25 142.875z"
-        />
-        <path
-          fill="#1a73e8"
-          d="M135.982 119.694a47.625 47.625 0 0 0-.054-48.953l36.82-5.86A95.264 95.264 0 0 1 136 168l-.018-48.306z"
-        />
-        <path
-          fill="#e33b2e"
-          d="M142.875 95.25a47.625 47.625 0 0 0-95.25 0l47.625-47.625h77.247A95.249 95.249 0 0 0 95.25 0v47.625z"
-        />
-        <circle cx="95.25" cy="95.25" r="38" fill="#1a73e8" />
-      </svg>
+        aria-hidden
+      />
     );
   }
 

@@ -200,3 +200,140 @@ html.yt-focus-hide-recommended #related,
 html.yt-focus-hide-recommended ytd-watch-next-secondary-results-renderer {
   display: none !important;
 }
+
+/* ----- Session budget lockout ----- */
+#yt-focus-lockout {
+  position: fixed;
+  inset: 0;
+  background: #0f0f0f;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'YouTube Sans', 'Roboto', sans-serif;
+}
+
+#yt-focus-lockout .yt-focus-lockout-card {
+  text-align: center;
+  padding: 40px;
+  max-width: 520px;
+}
+
+/* ----- Toast (sponsor skip) ----- */
+#yt-focus-toast-host {
+  position: fixed;
+  top: 72px;
+  right: 24px;
+  z-index: 2147483646;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+}
+
+.yt-focus-toast {
+  background: #111;
+  border: 1px solid #303030;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  animation: yt-focus-toast-in 180ms ease-out;
+}
+
+.yt-focus-toast.yt-focus-toast-out {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+@keyframes yt-focus-toast-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ----- Clickbait badge + panel ----- */
+.yt-focus-clickbait-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: #FF0000;
+  color: #fff;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.yt-focus-clickbait-panel {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 6px;
+  color: #eee;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.yt-focus-clickbait-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ff9a9a;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.yt-focus-clickbait-chevron {
+  transition: transform 180ms;
+}
+
+.yt-focus-clickbait-open .yt-focus-clickbait-chevron {
+  transform: rotate(90deg);
+}
+
+.yt-focus-clickbait-body {
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.yt-focus-clickbait-row {
+  margin-bottom: 8px;
+}
+
+.yt-focus-clickbait-row strong {
+  color: #ffb0b0;
+  font-weight: 600;
+}
+
+.yt-focus-genuine-title {
+  color: #fff;
+}
+
+.yt-focus-clickbait-reveal {
+  margin-top: 4px;
+  background: #FF0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.yt-focus-clickbait-reveal:disabled {
+  background: #444;
+  cursor: default;
+}

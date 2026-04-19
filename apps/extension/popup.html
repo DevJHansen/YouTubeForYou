@@ -2,113 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <style>
-    body {
-      font-family: 'YouTube Sans', 'Roboto', sans-serif;
-      background: #0f0f0f;
-      color: #fff;
-      margin: 0;
-      padding: 20px;
-      width: 280px;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #303030;
-    }
-    .header svg {
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
-    }
-    .header h1 {
-      font-size: 15px;
-      font-weight: 500;
-      margin: 0;
-    }
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-    }
-    .toggle-text {
-      flex: 1;
-      padding-right: 12px;
-    }
-    .toggle-label {
-      font-size: 13px;
-      color: #fff;
-    }
-    .toggle-desc {
-      font-size: 11px;
-      color: #888;
-      margin-top: 2px;
-    }
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 36px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: #555;
-      border-radius: 20px;
-      transition: background 0.2s;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      top: 3px;
-      background: #fff;
-      border-radius: 50%;
-      transition: transform 0.2s;
-    }
-    input:checked + .slider {
-      background: #FF0000;
-    }
-    input:checked + .slider:before {
-      transform: translateX(16px);
-    }
-    input:disabled + .slider {
-      cursor: not-allowed;
-      opacity: 0.4;
-    }
-    .toggle-row.sub {
-      padding-left: 20px;
-      border-left: 2px solid #303030;
-      margin-left: 4px;
-    }
-    .toggle-row.disabled .toggle-label,
-    .toggle-row.disabled .toggle-desc {
-      opacity: 0.4;
-    }
-    .lock-notice {
-      background: rgba(255, 0, 0, 0.08);
-      border: 1px solid rgba(255, 0, 0, 0.3);
-      color: #ff9a9a;
-      font-size: 11px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-  </style>
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="header">
@@ -124,60 +18,22 @@
     Solve the puzzle on the YouTube tab to change these settings.
   </div>
 
-  <div class="toggle-row" id="blockHomepageRow">
-    <div class="toggle-text">
-      <div class="toggle-label">Block homepage</div>
-      <div class="toggle-desc">Replace homepage with search</div>
-    </div>
-    <label class="switch">
-      <input type="checkbox" id="blockHomepage">
-      <span class="slider"></span>
-    </label>
-  </div>
+  <section class="section">
+    <div class="section-title">FREE</div>
+    <div id="freeList"></div>
+  </section>
 
-  <div class="toggle-row sub" id="puzzleBypassRow">
-    <div class="toggle-text">
-      <div class="toggle-label">Puzzle to bypass</div>
-      <div class="toggle-desc">Solve a math puzzle to proceed</div>
+  <section class="section">
+    <div class="section-title">
+      <span>PRO</span>
+      <span class="section-title-tag" id="planTag">FREE</span>
     </div>
-    <label class="switch">
-      <input type="checkbox" id="puzzleBypass">
-      <span class="slider"></span>
-    </label>
-  </div>
+    <div id="proList"></div>
+  </section>
 
-  <div class="toggle-row">
-    <div class="toggle-text">
-      <div class="toggle-label">Hide Shorts</div>
-      <div class="toggle-desc">Remove Shorts everywhere</div>
-    </div>
-    <label class="switch">
-      <input type="checkbox" id="hideShorts">
-      <span class="slider"></span>
-    </label>
-  </div>
-
-  <div class="toggle-row">
-    <div class="toggle-text">
-      <div class="toggle-label">Hide comments</div>
-      <div class="toggle-desc">Hide comments on videos</div>
-    </div>
-    <label class="switch">
-      <input type="checkbox" id="hideComments">
-      <span class="slider"></span>
-    </label>
-  </div>
-
-  <div class="toggle-row">
-    <div class="toggle-text">
-      <div class="toggle-label">Hide recommended</div>
-      <div class="toggle-desc">Hide sidebar suggestions</div>
-    </div>
-    <label class="switch">
-      <input type="checkbox" id="hideRecommended">
-      <span class="slider"></span>
-    </label>
-  </div>
+  <footer class="account-footer" id="accountFooter">
+    <!-- dynamically populated -->
+  </footer>
 
   <script src="popup.js"></script>
 </body>

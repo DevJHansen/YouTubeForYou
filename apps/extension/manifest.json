@@ -1,17 +1,31 @@
 {
   "manifest_version": 3,
   "name": "YouTube ForYou",
-  "version": "1.1",
+  "version": "1.4",
   "description": "Blocks YouTube homepage distractions and hides Shorts, comments, and recommendations",
-  "permissions": ["storage"],
+  "permissions": ["storage", "alarms"],
+  "host_permissions": [
+    "https://sponsor.ajay.app/*",
+    "https://yt-foryou-web.vercel.app/*"
+  ],
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
-      "js": ["content.js"],
+      "js": ["lib/api.js", "content.js"],
       "css": ["styles.css"],
       "run_at": "document_start"
     }
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "externally_connectable": {
+    "matches": [
+      "https://yt-foryou-web.vercel.app/*",
+      "https://*.vercel.app/*",
+      "http://localhost:3000/*"
+    ]
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

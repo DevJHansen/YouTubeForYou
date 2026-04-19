@@ -1,5 +1,5 @@
-// Central env readers. Vercel env scoping handles prod vs preview;
-// local .env.local should point to dev values.
+// Vercel env scoping handles prod vs preview: each scope has its own values
+// for the same unsuffixed var names. Locally, .env.local should hold dev/sandbox values.
 
 function req(name: string): string {
   const v = process.env[name];
@@ -18,15 +18,13 @@ export function polarEnv(): PolarEnv {
 }
 
 export function polar() {
-  const env = polarEnv();
-  const suffix = env === "live" ? "LIVE" : "SANDBOX";
   return {
-    env,
-    accessToken: req(`POLAR_ACCESS_TOKEN_${suffix}`),
-    webhookSecret: req(`POLAR_WEBHOOK_SECRET_${suffix}`),
-    productIdMonthly: req(`POLAR_PRODUCT_ID_PRO_MONTHLY_${suffix}`),
-    productIdAnnual: req(`POLAR_PRODUCT_ID_PRO_ANNUAL_${suffix}`),
-    server: env === "live" ? "production" : ("sandbox" as "production" | "sandbox"),
+    env: polarEnv(),
+    accessToken: req("POLAR_ACCESS_TOKEN"),
+    webhookSecret: req("POLAR_WEBHOOK_SECRET"),
+    productIdMonthly: req("POLAR_PRODUCT_ID_PRO_MONTHLY"),
+    productIdAnnual: req("POLAR_PRODUCT_ID_PRO_ANNUAL"),
+    server: (polarEnv() === "live" ? "production" : "sandbox") as "production" | "sandbox",
   };
 }
 

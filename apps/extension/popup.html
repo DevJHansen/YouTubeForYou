@@ -5,35 +5,40 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="header">
-    <svg viewBox="0 0 128 128">
-      <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" stroke-width="6"/>
-      <circle cx="64" cy="64" r="46" fill="#FF0000"/>
-      <path d="M52 42 L52 86 L88 64 Z" fill="white"/>
-    </svg>
-    <h1>YouTube ForYou</h1>
-  </div>
+  <div class="popup-shell">
+    <header class="popup-header">
+      <div class="brand">
+        <svg viewBox="0 0 128 128" aria-hidden="true">
+          <circle cx="64" cy="64" r="58" fill="none" stroke="#FF0000" stroke-width="6"/>
+          <circle cx="64" cy="64" r="46" fill="#FF0000"/>
+          <path d="M52 42 L52 86 L88 64 Z" fill="white"/>
+        </svg>
+        <span>ForYou</span>
+      </div>
+      <div class="status" id="statusText">Active · 0 rules</div>
+    </header>
 
-  <div class="lock-notice" id="lockNotice" hidden>
-    Solve the puzzle on the YouTube tab to change these settings.
-  </div>
-
-  <section class="section">
-    <div class="section-title">FREE</div>
-    <div id="freeList"></div>
-  </section>
-
-  <section class="section">
-    <div class="section-title">
-      <span>PRO</span>
-      <span class="section-title-tag" id="planTag">FREE</span>
+    <div class="popup-stats">
+      <div>
+        <div class="num" id="statShorts">0</div>
+        <div class="lbl">Shorts blocked</div>
+      </div>
+      <div>
+        <div class="num" id="statTime">0<span class="unit">h</span></div>
+        <div class="lbl">Saved this week</div>
+      </div>
     </div>
-    <div id="proList"></div>
-  </section>
 
-  <footer class="account-footer" id="accountFooter">
-    <!-- dynamically populated -->
-  </footer>
+    <div class="lock-notice" id="lockNotice" hidden>
+      Solve the puzzle on the YouTube tab to change these settings.
+    </div>
+
+    <div class="popup-list" id="list"></div>
+
+    <footer class="popup-footer" id="accountFooter">
+      <!-- dynamically populated -->
+    </footer>
+  </div>
 
   <script src="popup.js"></script>
 </body>

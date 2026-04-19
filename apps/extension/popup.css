@@ -59,60 +59,47 @@ body {
   flex-shrink: 0;
 }
 
-.popup-header .status {
+.popup-header .header-account {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--accent);
+  min-width: 0;
+  max-width: 200px;
 }
 
-.popup-header .status::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
-}
-
-/* ---------- Stats ---------- */
-.popup-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--line-soft);
+/* ---------- Stat ---------- */
+.popup-stat {
+  padding: 18px 18px 16px;
   border-bottom: 1px solid var(--line-soft);
 }
 
-.popup-stats > div {
-  background: var(--bg);
-  padding: 14px 18px;
-}
-
-.popup-stats .num {
-  font-size: 22px;
+.popup-stat .num {
+  font-size: 28px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text);
   line-height: 1;
 }
 
-.popup-stats .num .unit {
-  font-size: 13px;
+.popup-stat .num .unit {
+  font-size: 15px;
   color: var(--text-faint);
-  margin-left: 2px;
+  margin-left: 3px;
   font-weight: 400;
 }
 
-.popup-stats .lbl {
+.popup-stat .lbl {
   font-family: var(--font-mono);
   font-size: 9px;
   color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-top: 6px;
+  margin-top: 8px;
+}
+
+/* ---------- Upsell slot (between stat and features) ---------- */
+.upsell-slot:not(:empty) {
+  padding: 12px 12px 0;
 }
 
 /* ---------- Lock notice ---------- */
@@ -380,19 +367,7 @@ body {
   max-width: 110px;
 }
 
-/* ---------- Footer / Account ---------- */
-.popup-footer {
-  border-top: 1px solid var(--line-soft);
-  padding: 12px 14px;
-}
-
-.account-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
+/* ---------- Account controls (in header) ---------- */
 .account-email {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -403,12 +378,6 @@ body {
   min-width: 0;
 }
 
-.account-actions {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
 .account-btn {
   background: transparent;
   border: 1px solid var(--line);
@@ -416,11 +385,12 @@ body {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.04em;
-  padding: 5px 10px;
+  padding: 4px 9px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .account-btn:hover {
@@ -440,7 +410,7 @@ body {
   color: var(--accent-ink);
 }
 
-/* Upsell block — shown in footer when free user */
+/* ---------- Upsell card (between stat and features for free users) ---------- */
 .upsell {
   display: flex;
   align-items: center;
@@ -450,7 +420,6 @@ body {
   background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
   border: 1px solid var(--accent-line);
   border-radius: 8px;
-  margin-bottom: 10px;
 }
 
 .upsell-copy {

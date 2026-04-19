@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube ForYou",
-  "version": "1.2",
+  "version": "1.3",
   "description": "Take back your YouTube feed. Blocks the homepage, Shorts, comments, and recommendations. Pro adds scheduled focus mode, sponsor skip, budgets, analytics, and clickbait warnings.",
   "permissions": ["storage"],
   "content_scripts": [
@@ -12,6 +12,16 @@
       "run_at": "document_start"
     }
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "externally_connectable": {
+    "matches": [
+      "http://localhost:3000/*",
+      "https://yt-foryou-web.vercel.app/*",
+      "https://yt-foryou-web-git-*-devjhansens-projects.vercel.app/*"
+    ]
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

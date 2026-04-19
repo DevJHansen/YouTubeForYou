@@ -137,6 +137,10 @@ function openTab(url) {
   chrome.tabs.create({ url });
 }
 
+function signOut() {
+  chrome.storage.local.remove("authSession", () => window.close());
+}
+
 function formatHours(seconds) {
   if (!seconds) return "0";
   return (seconds / 3600).toFixed(1);
@@ -242,6 +246,12 @@ async function init() {
           onClick: () => openTab(UPGRADE_URL),
         }, ["Upgrade to Pro — $4.99/mo"]),
       );
+      account.appendChild(
+        el("button", {
+          className: "btn btn-link",
+          onClick: signOut,
+        }, ["Sign out"]),
+      );
     } else {
       account.appendChild(
         el("div", { className: "account-user" }, [
@@ -254,6 +264,12 @@ async function init() {
           className: "btn btn-ghost",
           onClick: () => openTab(BILLING_URL),
         }, ["Manage subscription"]),
+      );
+      account.appendChild(
+        el("button", {
+          className: "btn btn-link",
+          onClick: signOut,
+        }, ["Sign out"]),
       );
     }
 

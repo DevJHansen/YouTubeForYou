@@ -1,6 +1,10 @@
+import Link from "next/link";
+import { getSession } from "@/lib/auth";
 import { Icon } from "./Icon";
 
-export function Nav() {
+export async function Nav() {
+  const session = await getSession();
+
   return (
     <header className="nav">
       <div className="container-x nav-inner">
@@ -16,10 +20,21 @@ export function Nav() {
           <a href="#pricing">Pricing</a>
           <a href="#reviews">Reviews</a>
         </nav>
-        <a className="nav-cta" href="#install">
-          <Icon name="chrome" size={14} />
-          Add to Chrome
-        </a>
+        <div className="nav-end">
+          {session ? (
+            <Link className="nav-account" href="/account">
+              {session.plan === "pro" ? "Pro account" : "Account"}
+            </Link>
+          ) : (
+            <Link className="nav-account" href="/auth/signin">
+              Sign in
+            </Link>
+          )}
+          <a className="nav-cta" href="#install">
+            <Icon name="chrome" size={14} />
+            Add to Chrome
+          </a>
+        </div>
       </div>
     </header>
   );
